@@ -13,7 +13,7 @@ void Menus::mainMenu(User user)
 {
 	string choice;
 	system("cls");
-	cout << "\n\n##############################  Welcome To 7asebat News Managment System  ##############################\n\n";
+	cout << "\n\n#######################################################  Welcome To 7asebat News Managment System  #######################################################\n\n";
 flag:
 	cout << "\n1 -> Register" << endl;
 	cout << "2 -> Login" << endl;
@@ -68,7 +68,7 @@ flag:
 void Menus::Exit()
 {
 	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
-	cout << "\n\n##############################  Thank you for using 7asebat News Managment System  ##############################\n\n";
+	cout << "\n\n####################################################  Thank you for using 7asebat News Managment System  ###################################################\n\n";
 	chrono::seconds dura(3);
 	system("pause");
 	exit(0);
@@ -81,7 +81,7 @@ void Menus::adminMenu(Admin admin)
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
 		system("cls");
 		cout << "\t\t\t\t\t\t===================================" << endl;
-		cout << "\t\t\t\t\t\t             Admin's Menu          " << endl;
+		cout << "\t\t\t\t\t             Admin's Menu          " << endl;
 		cout << "\t\t\t\t\t\t===================================" << endl;
 		cout << "1. View News Articles\n";
 		cout << "2. Manage Categories\n";
@@ -129,18 +129,17 @@ void Menus::readerMenu(Reader reader)
 {
 	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
 	system("cls");
-	cout << "\t\t\t\t\t\t\t\t\t===================================" << endl;
-	cout << "\t\t\t\t\t\t\t\t\t            Reader Menu            " << endl;
-	cout << "\t\t\t\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t\t\t            Reader Menu            " << endl;
+	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
 	cout << "1. Latest News" << endl;
 	cout << "2. Search by Category" << endl;
 	cout << "3. Search by Keyword" << endl;
 	cout << "4. Edit Profile" << endl;
 	cout << "5. Log Out" << endl;
 	cout << "6. Exit" << endl;
-
+	cout << "\nEnter your choice: ";
 	int choice;
-	cout << "Enter your choice: ";
 	cin >> choice;
 
 	switch (choice) {

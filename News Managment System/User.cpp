@@ -248,11 +248,15 @@ flag:
 		strength = Test::password_strength(password);
 		if (strength < 8)
 		{
-	flag9:
-			cout << "\nWeak Password !!\n\n1 -> Enter a secure password\n2 -> continue";
+		flag9:
+			cout << "\nWeak Password !!\n\n1 -> Enter a secure password\n2 -> continue\n";
+			cout << "\nEnter your choice: ";
 			cin >> check;
 			if (check == 1)
+			{
+				cin.ignore();
 				goto flag;
+			}
 			else if (check == 2)
 			{
 				// skip
@@ -263,15 +267,19 @@ flag:
 				goto flag9;
 			}
 		}
-		
+
 		else if (strength >= 8 && strength < 10)
 		{
 		flag8:
-			cout << "\nModerate Password !!\n\n1 -> Enter a secure password\n2 -> continue";
+			cout << "\nModerate Password !!\n\n1 -> Enter a secure password\n2 -> continue\n";
+			cout << "\nEnter your choice: ";
 			cin >> check;
 			if (check == 1)
+			{
+				cin.ignore();
 				goto flag;
-			else if(check == 2)
+			}
+			else if (check == 2)
 			{
 				// skip
 			}
@@ -281,20 +289,20 @@ flag:
 				goto flag8;
 			}
 		}
-		
+
 		else if (strength >= 10)
 		{
 			cout << "\nStrong Password !!\n";
 		}
-	// Reader or Admin Registeration
-	*this = Test::adminOrReader(*this);
-	Menus::mainMenu(*this);
-	return *this;
+		// Reader or Admin Registeration
+		*this = Test::adminOrReader(*this);
+		Menus::mainMenu(*this);
+		return *this;
 	}
 	else
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
-		cout << "\nPassword is not matching\n";
+		cout << "\nPassword is not matching !!\n";
 		goto flag;
 	}
 
@@ -312,6 +320,7 @@ void User::login(User user)
 	getline(cin, username);
 
 	//takes password
+
 	cout << "\nPassword: ";
 	string password;
 	getline(cin, password);
@@ -329,12 +338,15 @@ void User::login(User user)
 			// check reader's data
 			if (Test::readerValidation(reader, password, username))
 			{
+				cout << "Hello " << reader.getFirstName() << " " << reader.getSecondName();
+				this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
 				Menus::readerMenu(reader);
 			}
 			else
 			{
 				cout << "Invalid Username or Password";
 				cout << "\n1 -> Try again\n2 -> Back to main Menus";
+				cout << "\nEnter your choice: ";
 				cin >> check;
 				if (check == 1)
 					login(reader);
@@ -349,12 +361,15 @@ void User::login(User user)
 			// check admin's data
 			if (Test::adminValidation(admin, password, username))
 			{
+				cout << "Hello " << admin.getFirstName() << " " << admin.getSecondName();
+				this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
 				Menus::adminMenu(admin);
 			}
 			else
 			{
 				cout << "Invalid Username or Password";
 				cout << "\n1 -> Try again\n2 -> Back to main Menus";
+				cout << "\nEnter your choice: ";
 				cin >> check;
 				if (check == 1)
 					login(admin);
@@ -373,7 +388,8 @@ void User::login(User user)
 		cout << "1 -> Register\n";
 		cout << "2 -> Back To Main Menus\n";
 		cout << "3 -> Exit\n";
-		cin >> choose;
+			cout << "\nEnter your choice: ";
+			cin >> choose;
 		if (choose == 1)
 			user.user_register();
 		else if (choose == 2)
