@@ -4,6 +4,10 @@
 #include <thread>
 #include <conio.h> 
 #include <cstdlib>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 #include"User.h"
 #include"Admin.h"
 #include"Reader.h"
@@ -71,6 +75,7 @@ void Menus::Exit()
 	cout << "\n\n####################################################  Thank you for using 7asebat News Managment System  ###################################################\n\n";
 	io_files::save_reader_data();
 	io_files::save_admin_data();
+	io_files::save_news_data();
 	system("pause");
 	exit(0);
 }
@@ -85,36 +90,71 @@ void Menus::adminMenu(Admin admin)
 		cout << "\t\t\t\t\t\t             Admin's Menu          " << endl;
 		cout << "\t\t\t\t\t\t===================================" << endl;
 		cout << "1. View News Articles\n";
-		cout << "2. Manage Categories\n";
-		cout << "3. Manage Users\n";
-		cout << "4. Analytics and Reports\n";
-		cout << "5. Edit News\n";
-		cout << "6. view Profile\n";
-		cout << "7. Edit Profile\n";
-		cout << "8. Log Out\n";
-		cout << "9. Exit\n";
+		cout << "2. Add News\n";
+		cout << "3. Update News\n";
+		cout << "4. Delete News\n";
+		cout << "5. Add Categories\n";
+		cout << "6. Rate a Title\n";
+		cout << "7. view Profile\n";
+		cout << "8. Edit Profile\n";
+		cout << "9. Log Out\n";
+		cout << "10. Exit\n";
 	flag:
 
 		cout << "\nEnter your choice: ";
 		cin >> choice;
 		if (choice == "1")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			system("cls");
 			admin.viewNewsArticles();
+			cout << "Press 1 when want to Back to Admin Menu\n";
+		}
 		else if (choice == "2")
-			admin.manageCategories();
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.addNews();
+		}
 		else if (choice == "3")
-			admin.manageUsers();
-		else if (choice == "4")
-			admin.analyticsAndReports();
-		else if (choice == "5")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 			admin.editNews();
+		}
+		else if (choice == "4")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.removeNews();
+		}
+		else if (choice == "5")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.addCategories();
+		}
 		else if (choice == "6")
-			admin.view_proile();
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.rateTitle();
+		}
 		else if (choice == "7")
-			admin.editProfile();
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.view_proile();
+		}
 		else if (choice == "8")
-			Menus::mainMenu(admin);
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			admin.editProfile(); 
+		}
 		else if (choice == "9")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			Menus::mainMenu(admin);
+		}
+		else if (choice == "10")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 			Menus::Exit();
+		}
 		else
 		{
 			cout << "Invalid choice. Please enter a number between 1 and 7.\n";
@@ -133,53 +173,64 @@ void Menus::readerMenu(Reader reader)
 	cout << "1. Latest News" << endl;
 	cout << "2. Search by Category" << endl;
 	cout << "3. Search by Keyword" << endl;
-	cout << "4. view Profile" << endl;
-	cout << "5. Edit Profile" << endl;
-	cout << "6. Log Out" << endl;
-	cout << "7. Exit" << endl;
+	cout << "4. Search by Title" << endl;
+	cout << "5. Bookmarked News" << endl;
+	cout << "6. Trending News" << endl;
+	cout << "7. view Profile" << endl;
+	cout << "8. Edit Profile" << endl;
+	cout << "9. Log Out" << endl;
+	cout << "10. Exit" << endl;
 	cout << "\nEnter your choice: ";
 flag01:
 	string choice;
 	cin >> choice;
 	if (choice == "1")
 	{
-		// Latest News 
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 		reader.viewLatestNews();
 	}
 	else if (choice == "2")
 	{
-		// Latest News 
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 		reader.categorySearch();
 	}
 	else if (choice == "3")
 	{
-		// Latest News 
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 		reader.keywordSearch();
 	}
 	else if (choice == "4")
 	{
-		// Latest News 
-		//this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
-		reader.view_proile();
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		reader.titelSearch();
 	}
 	else if (choice == "5")
 	{
-		// Latest News 
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
-		reader.edit_profile();
+		reader.bookmarkNews();
 	}
 	else if (choice == "6")
 	{
-		// Latest News 
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
-		Menus::mainMenu(reader);
+		reader.trendingNews();
 	}
 	else if (choice == "7")
 	{
-		// Latest News 
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		reader.view_proile();
+	}
+	else if (choice == "8")
+	{
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		reader.edit_profile();
+	}
+	else if (choice == "9")
+	{
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		Menus::mainMenu(reader);
+	}
+	else if (choice == "10")
+	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
 		Menus::Exit();
 	}
@@ -190,3 +241,14 @@ flag01:
 	}
 }
 
+string Menus::getCurrentDate()
+{
+	auto now = chrono::system_clock::now();
+	time_t currentTime;
+	time(&currentTime);
+	tm localTime;
+	localtime_s(&localTime, &currentTime);
+	ostringstream oss;
+	oss << put_time(&localTime, "%Y-%m-%d %H:%M:%S");
+	return oss.str();
+}

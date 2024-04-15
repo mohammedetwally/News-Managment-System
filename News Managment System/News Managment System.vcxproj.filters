@@ -36,6 +36,9 @@
     <ClCompile Include="io_files.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="News.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="io_files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="News.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,12 +16,12 @@ int main()
 {
 	io_files::fetch_admin_data();
 	io_files::fetch_reader_data();
-
+	io_files::fetch_news_data();
 
 	User user;
 	Menus::mainMenu(user);
 
-
+	io_files::save_news_data();
 	io_files::save_reader_data();
 	io_files::save_admin_data();
 }

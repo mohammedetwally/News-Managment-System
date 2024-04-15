@@ -8,4 +8,5 @@ public:
 	static void Exit();
 	static void adminMenu(Admin admin);
 	static void readerMenu(Reader reader);
+	static string getCurrentDate();
 };

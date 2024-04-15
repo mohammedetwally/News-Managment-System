@@ -16,4 +16,9 @@ public:
 	void viewLatestNews();
 	void categorySearch();
 	void keywordSearch();
+	void displayCategories();
+	void rateNews();
+	void bookmarkNews();
+	void trendingNews();
+	void titelSearch();
 };

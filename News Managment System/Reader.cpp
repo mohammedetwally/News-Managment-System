@@ -1,10 +1,14 @@
+#include<iostream>
 #include <windows.h>
 #include <thread>
 #include <conio.h> 
 #include <cstdlib>
+#include<vector>
+#include"News.h"
 #include "Reader.h"
 #include"Test.h"
 #include "Menus.h"
+using namespace std;
 map<string, User> Reader::reader_container;
 
 void Reader::edit_profile()
@@ -133,6 +137,25 @@ void Reader::view_proile()
 void Reader::viewLatestNews()
 {
 	// See New News (:
+	system("cls");
+	for (int i = News::latestNews.size() - 1; i >= 0; i--) {
+		cout << "\n\nTitle : " << News::latestNews[i].getTitle() << endl;
+		cout << News::latestNews[i].getDescription() << endl;
+		cout << "                                                         Date : " << News::latestNews[i].getDate() << endl;
+	flag:
+		cout << "\n\nPlease enter rate for this news: ";
+		string rate;
+		cin >> rate;
+		if(Test::rate_test(rate))
+			News::latestNews[i].setRate(rate);
+		else
+		{
+			cout << "\nInvalid Choice .... Please Try Again\n";
+			goto flag;
+		}
+	}
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+	Menus::readerMenu(*this);
 }
 
 void Reader::categorySearch()
@@ -143,4 +166,24 @@ void Reader::categorySearch()
 void Reader::keywordSearch()
 {
 	// Allow User to Search By KeyWords
+}
+
+void Reader::displayCategories()
+{
+}
+
+void Reader::rateNews()
+{
+}
+
+void Reader::bookmarkNews()
+{
+}
+
+void Reader::trendingNews()
+{
+}
+
+void Reader::titelSearch()
+{
 }

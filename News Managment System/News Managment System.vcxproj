@@ -131,6 +131,7 @@
     <ClCompile Include="io_files.cpp" />
     <ClCompile Include="Menus.cpp" />
     <ClCompile Include="News Managment System.cpp" />
+    <ClCompile Include="News.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="User.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="io_files.h" />
     <ClInclude Include="Menus.h" />
+    <ClInclude Include="News.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="User.h" />

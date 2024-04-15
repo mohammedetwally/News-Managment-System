@@ -78,7 +78,7 @@ void User::enter_first_name(string first_name, User& user)
 	}
 	else
 	{
-		cout << "incorrect fisrt name ..... Please Try Again\n\n";
+		cout << "\nincorrect fisrt name ..... Please Try Again: ";
 		string f_name;
 		getline(cin, f_name);
 		enter_first_name(f_name, user);
@@ -94,7 +94,7 @@ void User::enter_second_name(string second_name, User& user)
 	}
 	else
 	{
-		cout << "incorrect second name ..... Please Try Again\n\n";
+		cout << "\nincorrect fisrt name ..... Please Try Again: ";
 		string s_name;
 		getline(cin, s_name);
 		enter_second_name(s_name, user);
@@ -110,7 +110,7 @@ void User::enter_password(string password, User& user)
 	}
 	else
 	{
-		cout << "incorrect password ..... Please Try Again \n\n";
+		cout << "\nincorrect fisrt name ..... Please Try Again: ";
 		string pass;
 		getline(cin, pass);
 		enter_password(pass, user);
@@ -126,7 +126,7 @@ void User::enter_username(string username, User& user)
 	}
 	else
 	{
-		cout << "incorrect username ..... Please Try Again";
+		cout << "\nincorrect fisrt name ..... Please Try Again: ";
 		string user_name;
 		getline(cin, user_name);
 		enter_username(user_name, user);

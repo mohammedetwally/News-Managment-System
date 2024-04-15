@@ -34,9 +34,9 @@ int Test::password_strength(string password)
 	{
 		if (password[i] >= '1' && password[i] <= '9')
 			digit++;
-		if (password[i] >= 'a' && password[i] <= 'z' || password[i] >= 'A' && password[i] <= 'Z')
+		else if (password[i] >= 'a' && password[i] <= 'z' || password[i] >= 'A' && password[i] <= 'Z')
 			character++;
-		if (password[i] >= 33 && password[i] <= 47 || password[i] >= 58 && password[i] <= 64 || password[i] >= 91 && password[i] <= 96 || password[i] >= 123 && password[i] <= 126)
+		else if (password[i] >= 33 && password[i] <= 47 || password[i] >= 58 && password[i] <= 64 || password[i] >= 91 && password[i] <= 96 || password[i] >= 123 && password[i] <= 126)
 			sympol++;
 	}
 	return (sympol + character + digit);
@@ -72,6 +72,63 @@ bool Test::user_check(User& user)
 {
 	return (user.getFirstName().size() && user.getSecondName().size()
 		&& user.getUserName().size() && user.getPassword().size());
+}
+
+bool Test::title_description_Test(string title_description)
+{
+	if(title_description.empty())
+		return false;
+	else
+	{
+		int character = 0, sympol = 0, digit = 0;
+		for (int i = 0; i < title_description.length(); i++)
+		{
+			if (title_description[i] >= '1' && title_description[i] <= '9')
+				digit++;
+			else if (title_description[i] >= 'a' && title_description[i] <= 'z' || title_description[i] >= 'A' && title_description[i] <= 'Z')
+				character++;
+			else if (title_description[i] >= 33 && title_description[i] <= 47 || title_description[i] >= 58 && title_description[i] <= 64 || title_description[i] >= 91 && title_description[i] <= 96 || title_description[i] >= 123 && title_description[i] <= 126)
+				sympol++;
+		}
+		if (character == 0)
+			return false;
+		else
+			return true;
+	}
+}
+
+bool Test::category_test(string category)
+{
+	if(category.empty())
+		return false;
+	else
+	{
+		for (int i = 0; i < category.length(); i++)
+		{
+			if (isalpha(category[i]) || category[i] == ' ')
+				continue;
+			else return false;
+		}
+		return true;
+	}
+}
+
+bool Test::rate_test(string rate)
+{
+	if (rate >= "0" && rate <= "5")
+	{
+		for (int i = 0; i < rate.size(); i++)
+		{
+			if (isdigit(rate[i]))
+			{
+				if (rate[1] = 46)
+					return true;
+				return true;
+			}
+			else return false;
+		}
+	}
+	else return false;
 }
 
 User Test::adminOrReader(User user)

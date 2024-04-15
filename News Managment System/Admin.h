@@ -8,16 +8,16 @@ public:
     Admin() : User() {};
     Admin(const User& user) : User(user) {};
 
-    // Conr=tainers 
+    // Conrtainers 
     static map<string, User> admin_container;
 
     // Admin Functionalities
     void addNews();
-    void viewNewsArticles();
-    void manageCategories();
-    void manageUsers();
-    void analyticsAndReports();
+    void removeNews();
     void editNews();
+    void addCategories();
+    void viewNewsArticles();
+    void rateTitle();
     void editProfile();
     void view_proile();
 };
