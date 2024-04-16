@@ -161,6 +161,45 @@ void Reader::viewLatestNews()
 void Reader::categorySearch()
 {
 	// Allow User to Search By Categories
+	cout << "enter the category you want \n";
+	string category;
+	cin.ignore();
+	getline(cin, category);
+	if (News::newsCategories.find(category) != News::newsCategories.end())
+	{
+		for (auto news : News::newsCategories)
+		{
+			if (news.second.getCategory() == category)
+			{
+				cout << "news title is  : " << news.second.getTitle() << endl<<endl;
+				cout << "news discription is : " << news.second.getDescription() <<endl<< endl;
+				cout << "news date is : " << news.second.getDate() << endl<<endl;
+				cout << "written by : " << news.second.getAdminUserName() << endl<<endl;
+				cout << "\t\t\t\t\t\t_____________________________________\t\t\t\t\t";
+				cout << endl;
+			}
+		}
+	}
+	else
+	{
+		cout << "invalid category \n1-return to main menu \n2-try again\n" << endl;
+	}
+flag2004:
+		string choice;
+		cin >> choice;
+		if (choice.length()==1&&choice=="1")
+		{
+			Menus::readerMenu(*this);
+		}
+		else if (choice.length() == 1 && choice == "2")
+		{
+			categorySearch();
+		}
+		else
+		{
+			cout << "invalid value \n1-return to main menu\n2-try again\n\n";
+			goto flag2004;
+		}
 }
 
 void Reader::keywordSearch()

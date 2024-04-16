@@ -11,7 +11,7 @@
 map<string, User> Admin::admin_container;
 vector <News> News::latestNews;
 map<tuple<string, string, string>, News> News::allNews;
-unordered_map <string, News>  News::newsCategories;
+unordered_multimap <string, News>  News::newsCategories;
 // For Editing Admin's Exsit Data
 void Admin::editProfile()
 {
@@ -230,8 +230,43 @@ flag03:
 
 void Admin::removeNews()
 {
-	/// Remove News
+	string titleToRemove;
+	cout << "Enter the title of the news  you want to remove: ";
+	cin >> titleToRemove;
+
+	// 1. Remove from latestNews
+
+	for (auto i = News::latestNews.begin(); i != News::latestNews.end(); i++)
+	{
+		if (i->getTitle() == titleToRemove)
+		{
+			News::latestNews.erase(i);
+			break; // 
+		}
+	}
+	// 2. Remove from allNews
+
+	for (auto i = News::allNews.begin(); i != News::allNews.end(); ++i)
+	{
+		if (get<0>(i->first) == titleToRemove)
+		{
+			News::allNews.erase(i);
+			break;
+		}
+	}
+
+	// 3. Remove from newsCategories
+
+	auto new_to_remove = News::newsCategories.find(titleToRemove);
+	if (new_to_remove != News::newsCategories.end())
+	{
+		News::newsCategories.erase(new_to_remove);
+	}
+
+	cout << "News article \"" << titleToRemove << "\" has been removed.\n";
 }
+
+
 
 void Admin::viewNewsArticles() {
 	// view news articles
