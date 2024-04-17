@@ -281,7 +281,79 @@ void Admin::addCategories() {
 	// manage categories
 }
 
-void Admin::editNews()
-{
-	// to update or edit news
+void Admin::editNews() {
+
+	// Display articles to select
+
+	system("cls");
+	cout << "\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t          Edit News             " << endl;
+	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
+
+
+
+	// Display all titles (maybe good idea) cout << "Available Articles:\n";
+
+	//the title is never found!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!when i wake up ان شاء الله!!!!!!!!! error no title found and another register error after login with unexisted acc and you go for register after registeration it closes 
+
+	// Ask for the title of the article to edit
+	string titleToEdit;
+	cout << "\nEnter the title of the article you want to update: ";
+	cin.ignore();
+	getline(cin, titleToEdit);
+
+	// Search for the article by title
+	for (auto i = News::latestNews.begin(); i != News::latestNews.end(); i++)
+	{
+		if (i->getTitle() == titleToEdit)
+		{
+
+
+			// Display current details of the article
+
+			cout << "News Title: " << i->getTitle() << endl;
+			cout << "News Description: " << i->getDescription() << endl;
+			cout << "News Category: " << i->getCategory() << endl;
+			cout << "News Date: " << i->getDate() << endl;
+
+			// Prompt for new details
+			string newTitle, newDescription, newCategory;
+			cout << "\nEnter new details (press Enter to keep the current value):\n";
+
+			cout << "New Title: ";
+			getline(cin, newTitle);
+			if (!newTitle.empty()) {
+				i->setTitle(newTitle);
+			}
+
+			cout << "New Description: ";
+			getline(cin, newDescription);
+			if (!newDescription.empty()) {
+				i->setDescription(newDescription);
+			}
+
+			cout << "New Category: ";
+			getline(cin, newCategory);
+			if (!newCategory.empty()) {
+				i->setCategory(newCategory);
+			}
+
+			// Update the date
+			i->setDate(Menus::getCurrentDate());
+
+			// Display updated details
+			cout << "\nUpdated Details of the Article:\n";
+			cout << "News Title: " << i->getTitle() << endl;
+			cout << "News Description: " << i->getDescription() << endl;
+			cout << "News Category: " << i->getCategory() << endl;
+			cout << "News Date: " << i->getDate() << endl;
+
+			cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
+		}
+		else {
+			cout << "\narticle with the title \"" << titleToEdit << "\" not found.\n";
+		}
+
+
+	} Menus::adminMenu(*this);
 }
