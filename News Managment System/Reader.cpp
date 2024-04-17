@@ -167,17 +167,14 @@ void Reader::categorySearch()
 	getline(cin, category);
 	if (News::newsCategories.find(category) != News::newsCategories.end())
 	{
-		for (auto news : News::newsCategories)
+		for (auto news : News::newsCategories[category])
 		{
-			if (news.second.getCategory() == category)
-			{
-				cout << "news title is  : " << news.second.getTitle() << endl<<endl;
-				cout << "news discription is : " << news.second.getDescription() <<endl<< endl;
-				cout << "news date is : " << news.second.getDate() << endl<<endl;
-				cout << "written by : " << news.second.getAdminUserName() << endl<<endl;
+				cout << "news title is  : " << news.getTitle() << endl<<endl;
+				cout << "news discription is : " << news.getDescription() <<endl<< endl;
+				cout << "news date is : " << news.getDate() << endl<<endl;
+				cout << "written by : " << news.getAdminUserName() << endl<<endl;
 				cout << "\t\t\t\t\t\t_____________________________________\t\t\t\t\t";
 				cout << endl;
-			}
 		}
 	}
 	else

@@ -37,6 +37,8 @@ public:
 
 	// container
 	static vector<News> latestNews; // Contain news sorted with date
-	static unordered_multimap<string,News> newsCategories; // contain a key which is category and an data which is News
+	typedef map<string, vector<News>>Graph;
+
+	static Graph newsCategories; // contain a key which is category and an data which is News
 	static map<tuple<string, string, string> ,News> allNews; // Contain all news with a key which is Admin's username
 };

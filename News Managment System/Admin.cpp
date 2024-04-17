@@ -11,7 +11,8 @@
 map<string, User> Admin::admin_container;
 vector <News> News::latestNews;
 map<tuple<string, string, string>, News> News::allNews;
-unordered_multimap <string, News>  News::newsCategories;
+typedef map<string, vector<News>> Graph;
+Graph  News::newsCategories;
 // For Editing Admin's Exsit Data
 void Admin::editProfile()
 {
@@ -211,7 +212,7 @@ flag02:
 	News::allNews.insert(keyValue);
 
 	// Push in Hash Table
-	News::newsCategories.emplace(news.getCategory(), news);
+	News::newsCategories[news.getCategory()].push_back(news);
 
 flag03:
 	cout << "\n\n1 -> Back to Admin Menu\n2 -> Add Another News\n";
@@ -257,11 +258,11 @@ void Admin::removeNews()
 
 	// 3. Remove from newsCategories
 
-	auto new_to_remove = News::newsCategories.find(titleToRemove);
+	/*auto new_to_remove = News::newsCategories.find(titleToRemove);
 	if (new_to_remove != News::newsCategories.end())
 	{
 		News::newsCategories.erase(new_to_remove);
-	}
+	}*/
 
 	cout << "News article \"" << titleToRemove << "\" has been removed.\n";
 }

@@ -170,7 +170,7 @@ void io_files::fetch_news_data()
                 News::latestNews.insert(News::latestNews.begin() , news);
                 pair<tuple<string, string, string>, News> keyValue = make_pair(make_tuple(news.getAdminUserName(), news.getTitle(), news.getDescription()), news);
                 News::allNews.insert(keyValue);
-                News::newsCategories.emplace(news.getCategory(), news);
+                News::newsCategories[news.getCategory()].push_back(news);
             }
             else {
                 count++;
