@@ -20,7 +20,7 @@ string News::getDate()
 
 string News::getRate()
 {
-    return rate;
+    return average_rate;
 }
 
 string News::getCategory()
@@ -51,9 +51,10 @@ void News::setDate(string date)
     this->date = date;
 }
 
-void News::setRate(string rate)
-{
-    this->rate = rate;
+
+
+void News::addNewRate(string rate) {
+    rates.push_back(stoi(rate));
 }
 
 void News::setCategory(string category)
@@ -64,4 +65,9 @@ void News::setCategory(string category)
 void News::setAdminUserName(string adminUserName)
 {
     this->adminUserName = adminUserName;
+}
+
+
+void News::setAvgRate(string avg) {
+    this->average_rate = avg;
 }

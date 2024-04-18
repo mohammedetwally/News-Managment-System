@@ -147,7 +147,7 @@ void Reader::viewLatestNews()
 		string rate;
 		cin >> rate;
 		if(Test::rate_test(rate))
-			News::latestNews[i].setRate(rate);
+			News::latestNews[i].addNewRate(rate);
 		else
 		{
 			cout << "\nInvalid Choice .... Please Try Again\n";

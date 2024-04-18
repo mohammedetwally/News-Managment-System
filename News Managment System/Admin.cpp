@@ -8,11 +8,13 @@
 #include"Test.h"
 #include "Menus.h"
 #include"News.h"
+
 map<string, User> Admin::admin_container;
 vector <News> News::latestNews;
 map<tuple<string, string, string>, News> News::allNews;
 typedef map<string, vector<News>> Graph;
 Graph  News::newsCategories;
+
 // For Editing Admin's Exsit Data
 void Admin::editProfile()
 {
@@ -148,12 +150,12 @@ void Admin::addNews()
 	cout << "\t\t\t\t\t\t              Add News             " << endl;
 	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
 	cout << "Please Enter News Data:\n\n";
-	
+
 	// Title Entery
 flag:
 	cout << "News Title: ";
 	cin.ignore();
-	getline(cin,title);
+	getline(cin, title);
 	if (Test::title_description_Test(title))
 		news.setTitle(title);
 	else
@@ -275,8 +277,46 @@ void Admin::viewNewsArticles() {
 
 void Admin::rateTitle()
 {
-	// Put a Rate for Each Title
+	system("cls");
+	cout << "\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t             New's Rating          " << endl;
+	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
+
+
+	string titleToEdit;
+	cout << "\nEnter the title of the article you want to display its rate: ";
+	cin.ignore();
+	getline(cin, titleToEdit);
+
+	for (auto i = News::latestNews.begin(); i != News::latestNews.end(); i++)
+	{
+
+		if (i->getTitle() == titleToEdit)
+		{
+			// Display current details of the article
+
+			cout << "News Title: " << i->getTitle() << endl;
+			cout << "News Description: " << i->getDescription() << endl;
+			cout << "News Category: " << i->getCategory() << endl;
+			cout << "News Date: " << i->getDate() << endl;
+			float avgRate = 0.0;
+			if (i->rates.size() == 0) {
+				avgRate = 3.0;
+			}
+			else {
+				for (auto r : i->rates) {
+					avgRate += r;
+				}
+				avgRate /= i->rates.size();
+				avgRate = round(avgRate);
+			}
+
+			i->setAvgRate(to_string(avgRate));
+			cout << "Average Rate: " << i->getRate() << endl;
+		}
+	}
 }
+
 
 void Admin::addCategories() {
 	// manage categories
@@ -292,23 +332,20 @@ void Admin::editNews() {
 	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
 
 
-
-	// Display all titles (maybe good idea) cout << "Available Articles:\n";
-
-	//the title is never found!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!when i wake up ان شاء الله!!!!!!!!! error no title found and another register error after login with unexisted acc and you go for register after registeration it closes 
-
 	// Ask for the title of the article to edit
 	string titleToEdit;
 	cout << "\nEnter the title of the article you want to update: ";
 	cin.ignore();
 	getline(cin, titleToEdit);
 
+	bool check = true;
 	// Search for the article by title
 	for (auto i = News::latestNews.begin(); i != News::latestNews.end(); i++)
 	{
+
 		if (i->getTitle() == titleToEdit)
 		{
-
+			check = false;
 
 			// Display current details of the article
 
@@ -351,10 +388,11 @@ void Admin::editNews() {
 
 			cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
 		}
-		else {
-			cout << "\narticle with the title \"" << titleToEdit << "\" not found.\n";
-		}
 
+	}
 
-	} Menus::adminMenu(*this);
+	if (check)
+		cout << "\narticle with the title \"" << titleToEdit << "\" not found.\n";
+
+	Menus::adminMenu(*this);
 }

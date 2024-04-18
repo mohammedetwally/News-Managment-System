@@ -23,6 +23,7 @@ public:
 
 	// containers
 
+
 	// Setter methods
 	void setUserName(string username);
 	void setPassword(string pass);

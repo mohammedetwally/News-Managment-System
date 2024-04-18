@@ -51,6 +51,7 @@ flag:
 		cout << "\t\t\t\t\t\t===================================" << endl;
 
 		user.login(user);
+		Menus::mainMenu(user);
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
 
 	}

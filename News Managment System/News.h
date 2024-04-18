@@ -7,11 +7,14 @@
 using namespace std;
 class News
 {
+public:
+	vector<int> rates;
+
 protected:
 	string title;
 	string description;
 	string date;
-	string rate;
+	string average_rate = "3.0";
 	string category;
 	string adminUserName;
 public:
@@ -31,10 +34,10 @@ public:
 	void setTitle(string title);
 	void setDescription(string description);
 	void setDate(string date);
-	void setRate(string rate);
 	void setCategory(string category);
 	void setAdminUserName(string adminUserName);
-
+	void setAvgRate(string avg);
+	void addNewRate(string rate);
 	// container
 	static vector<News> latestNews; // Contain news sorted with date
 	typedef map<string, vector<News>>Graph;
