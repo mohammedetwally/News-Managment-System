@@ -28,7 +28,7 @@ flag:
 
 	if (choice == "1")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		system("cls");
 		//Register function
 
@@ -42,7 +42,7 @@ flag:
 
 	else if (choice == "2")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		system("cls");
 		//login function
 
@@ -52,14 +52,13 @@ flag:
 
 		user.login(user);
 		Menus::mainMenu(user);
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
-
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	}
 
 	else if (choice == "3")
 	{
 		// Exit function
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		system("cls");
 		Menus::Exit();
 
@@ -85,7 +84,7 @@ void Menus::adminMenu(Admin admin)
 {
 	string choice;
 	while (true) {
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		system("cls");
 		cout << "\t\t\t\t\t\t===================================" << endl;
 		cout << "\t\t\t\t\t\t             Admin's Menu          " << endl;
@@ -106,54 +105,54 @@ void Menus::adminMenu(Admin admin)
 		cin >> choice;
 		if (choice == "1")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			system("cls");
 			admin.viewNewsArticles();
 			cout << "Press 1 when want to Back to Admin Menu\n";
 		}
 		else if (choice == "2")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.addNews();
 		}
 		else if (choice == "3")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.editNews();
 		}
 		else if (choice == "4")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.removeNews();
 		}
 		else if (choice == "5")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.addCategories();
 		}
 		else if (choice == "6")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.rateTitle();
 		}
 		else if (choice == "7")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.view_proile();
 		}
 		else if (choice == "8")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			admin.editProfile(); 
 		}
 		else if (choice == "9")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			Menus::mainMenu(admin);
 		}
 		else if (choice == "10")
 		{
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			Menus::Exit();
 		}
 		else
@@ -166,7 +165,7 @@ void Menus::adminMenu(Admin admin)
 
 void Menus::readerMenu(Reader reader)
 {
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	system("cls");
 	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
 	cout << "\t\t\t\t\t\t\t\t            Reader Menu            " << endl;
@@ -187,52 +186,52 @@ flag01:
 	cin >> choice;
 	if (choice == "1")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.viewLatestNews();
 	}
 	else if (choice == "2")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.categorySearch();
 	}
 	else if (choice == "3")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.keywordSearch();
 	}
 	else if (choice == "4")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.titelSearch();
 	}
 	else if (choice == "5")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.bookmarkNews();
 	}
 	else if (choice == "6")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.trendingNews();
 	}
 	else if (choice == "7")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.view_proile();
 	}
 	else if (choice == "8")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.edit_profile();
 	}
 	else if (choice == "9")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		Menus::mainMenu(reader);
 	}
 	else if (choice == "10")
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		Menus::Exit();
 	}
 	else

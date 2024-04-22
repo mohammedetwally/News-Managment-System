@@ -147,7 +147,7 @@ void io_files::save_news_data() {
 			for (auto r : t.rates) {
 				news_file << r << endl;
 			}
-			news_file << "end_rates";
+			news_file << "end_rates" << endl;
 			news_file << t.getDate() << endl;
 		}
 	}

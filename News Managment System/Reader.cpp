@@ -93,7 +93,7 @@ flag:
 	}
 	else
 	{
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		cout << "\nPassword is not matching !!\n";
 		goto flag;
 	}
@@ -154,7 +154,7 @@ void Reader::viewLatestNews()
 			goto flag;
 		}
 	}
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	Menus::readerMenu(*this);
 }
 

@@ -18,7 +18,7 @@ Graph  News::newsCategories;
 // For Editing Admin's Exsit Data
 void Admin::editProfile()
 {
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(3));
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	system("cls");
 	cout << "\nEditing Admin Profile: \n";
 
@@ -318,8 +318,33 @@ void Admin::rateTitle()
 }
 
 
+//
+//	FUNCTIONS NOTES --- PLEASE READ NIGGA
+//	This function adds a category with an empty <News> vector.
+//  The category isn't saved because the "save in file" function takes the categories directly from the <News> object.
+//  You have to save the names of the categories somewhere else, or at the beginning of the news file
+//  Also, consider that at the current moment, deleting a category results in the deletion of all the news in that category,
+//  so we have to implement a non-deletable category called "Uncategorized" that takes all the news that don't exist in a category,
+//  or any news that has "" string in the category field.
+//
 void Admin::addCategories() {
-	// manage categories
+	system("cls");
+	cout << "\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t            Add Category           " << endl;
+	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
+
+	string newCategory;
+	cout << "\nEnter the name of the new category to add: ";
+	cin.ignore();
+	getline(cin, newCategory);
+
+	if (News::newsCategories.count(newCategory) != 0) {
+		cout << "Category already exists!";
+	}
+	else {
+		vector<News> emptyNewsVector;
+		News::newsCategories.insert(make_pair(newCategory, emptyNewsVector));
+	}
 }
 
 void Admin::editNews() {
