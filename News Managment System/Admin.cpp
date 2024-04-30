@@ -358,66 +358,77 @@ void Admin::editNews() {
 
 
 	// Ask for the title of the article to edit
-	string titleToEdit;
-	cout << "\nEnter the title of the article you want to update: ";
-	cin.ignore();
-	getline(cin, titleToEdit);
-
-	bool check = true;
-	// Search for the article by title
-	for (auto i = News::latestNews.begin(); i != News::latestNews.end(); i++)
+	int titleToEdit;
+	cout << "\nEnter the number of the article you want to update: ";
+	for (int i = 0;i < News::latestNews.size() - 1; i++)
 	{
-
-		if (i->getTitle() == titleToEdit)
-		{
-			check = false;
-
-			// Display current details of the article
-
-			cout << "News Title: " << i->getTitle() << endl;
-			cout << "News Description: " << i->getDescription() << endl;
-			cout << "News Category: " << i->getCategory() << endl;
-			cout << "News Date: " << i->getDate() << endl;
-
-			// Prompt for new details
-			string newTitle, newDescription, newCategory;
-			cout << "\nEnter new details (press Enter to keep the current value):\n";
-
-			cout << "New Title: ";
-			getline(cin, newTitle);
-			if (!newTitle.empty()) {
-				i->setTitle(newTitle);
-			}
-
-			cout << "New Description: ";
-			getline(cin, newDescription);
-			if (!newDescription.empty()) {
-				i->setDescription(newDescription);
-			}
-
-			cout << "New Category: ";
-			getline(cin, newCategory);
-			if (!newCategory.empty()) {
-				i->setCategory(newCategory);
-			}
-
-			// Update the date
-			i->setDate(Menus::getCurrentDate());
-
-			// Display updated details
-			cout << "\nUpdated Details of the Article:\n";
-			cout << "News Title: " << i->getTitle() << endl;
-			cout << "News Description: " << i->getDescription() << endl;
-			cout << "News Category: " << i->getCategory() << endl;
-			cout << "News Date: " << i->getDate() << endl;
-
-			cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
-		}
-
+		cout << i + 1 << ": " << News::latestNews[i].getTitle();
 	}
+	cin.ignore();
+	cin >> titleToEdit;
+	bool check;
+	if (titleToEdit > News::latestNews.size()) 
+	{
+		check = true;
+	}
+	else
+	{
+		check = false;
+	}
+		titleToEdit -= 1;
+	
+	// Search for the article by title
+		if (!check) {
 
-	if (check)
-		cout << "\narticle with the title \"" << titleToEdit << "\" not found.\n";
+			
+				//check = false;
+
+				// Display current details of the article
+
+				cout << "News Title: " << News::latestNews[titleToEdit].getTitle() << endl;
+				cout << "News Description: " << News::latestNews[titleToEdit].getDescription() << endl;
+				cout << "News Category: " << News::latestNews[titleToEdit].getCategory() << endl;
+				cout << "News Date: " << News::latestNews[titleToEdit].getDate() << endl;
+
+				// Prompt for new details
+				string newTitle, newDescription, newCategory;
+				cout << "\nEnter new details (press Enter to keep the current value):\n";
+
+				cout << "New Title: ";
+				getline(cin, newTitle);
+				if (!newTitle.empty()) {
+					News::latestNews[titleToEdit].setTitle(newTitle);
+				}
+
+				cout << "New Description: ";
+				getline(cin, newDescription);
+				if (!newDescription.empty()) {
+					News::latestNews[titleToEdit].setDescription(newDescription);
+				}
+
+				cout << "New Category: ";
+				getline(cin, newCategory);
+				if (!newCategory.empty()) {
+					News::latestNews[titleToEdit].setCategory(newCategory);
+				}
+
+				// Update the date
+				News::latestNews[titleToEdit].setDate(Menus::getCurrentDate());
+
+				// Display updated details
+				cout << "\nUpdated Details of the Article:\n";
+				cout << "News Title: " << News::latestNews[titleToEdit].getTitle() << endl;
+				cout << "News Description: " << News::latestNews[titleToEdit].getDescription() << endl;
+				cout << "News Category: " << News::latestNews[titleToEdit].getCategory() << endl;
+				cout << "News Date: " << News::latestNews[titleToEdit].getDate() << endl;
+
+				cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
+			}
+
+		
+
+	    if (check)
+		cout << "\narticle with the number \"" << titleToEdit << "\" not found.\n";
 
 	Menus::adminMenu(*this);
 }
