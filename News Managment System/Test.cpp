@@ -76,7 +76,7 @@ bool Test::user_check(User& user)
 
 bool Test::title_description_Test(string title_description)
 {
-	if(title_description.empty())
+	if (title_description.empty())
 		return false;
 	else
 	{
@@ -99,13 +99,13 @@ bool Test::title_description_Test(string title_description)
 
 bool Test::category_test(string category)
 {
-	if(category.empty())
+	if (category.empty())
 		return false;
 	else
 	{
 		for (int i = 0; i < category.length(); i++)
 		{
-			if (isalpha(category[i]) || category[i] == ' ')
+			if (isalpha(category[i]) || category[i] == ' ' || category[i] == '&')
 				continue;
 			else return false;
 		}
@@ -131,10 +131,19 @@ bool Test::rate_test(string rate)
 	else return false;
 }
 
+bool Test::compareByDate(pair<string, News> a, pair<string, News> b)
+{
+	return a.second.getDate() < b.second.getDate();
+}
+
+
+
+
 User Test::adminOrReader(User user)
 {
 	cout << "\n1 -> Register as an Admin ";
 	cout << "\n2 -> Register as an Reader \n";
+	cout << "\n\nEnter your choice: ";
 	int decision;
 	cin >> decision;
 	if (decision == 1)
@@ -169,4 +178,21 @@ User Test::adminOrReader(User user)
 			goto flag;
 		}
 	}
+}
+
+
+bool Test::isDate(string inputStr)
+{
+	istringstream ss(inputStr);
+	tm date = {};
+	ss >> get_time(&date, "%Y-%m-%d");
+	return !ss.fail();
+}
+
+string Test::extractDate(string fullDate)
+{
+	istringstream ss(fullDate);
+	string date;
+	ss >> date;
+	return date;
 }

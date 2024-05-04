@@ -137,18 +137,20 @@ void io_files::save_news_data() {
 	news_file.open("news.txt", ios::trunc);
 
 	if (news_file.is_open()) {
-		for (auto t : News::latestNews) {
-			news_file << t.getAdminUserName() << endl;
-			news_file << t.getCategory() << endl;
-			news_file << t.getTitle() << endl;
-			news_file << t.getDescription() << endl;
-			news_file << t.getRate() << endl;
+		for (auto t : News::News_Container) {
+			news_file << t.second.getAdminUserName() << endl;
+			news_file << t.second.getCategory() << endl;
+			news_file << t.second.getTitle() << endl;
+			news_file << t.second.getDescription() << endl;
+			news_file << t.second.getAdminFirstName() << endl;
+			news_file << t.second.getAdminSecondName() << endl;
+			news_file << t.second.getRate() << endl;
 			news_file << "start_rates" << endl;
-			for (auto r : t.rates) {
+			for (auto r : t.second.rates) {
 				news_file << r << endl;
 			}
 			news_file << "end_rates" << endl;
-			news_file << t.getDate() << endl;
+			news_file << t.second.getDate() << endl;
 		}
 	}
 	news_file.close();
@@ -156,7 +158,7 @@ void io_files::save_news_data() {
 
 void io_files::fetch_news_data()
 {
-	string line[6];
+	string line[8];
 	int count = 0;
 	ifstream news_file;
 	news_file.open("news.txt", ios::in);
@@ -171,18 +173,17 @@ void io_files::fetch_news_data()
 					else news.rates.push_back(stoi(rate));
 				}
 			}
-			else if (count == 5) {
+			else if (count == 7) {
 				count = 0;
 				news.setAdminUserName(line[0]);
 				news.setCategory(line[1]);
 				news.setTitle(line[2]);
 				news.setDescription(line[3]);
-				news.setAvgRate(line[4]);
-				news.setDate(line[5]);
-				News::latestNews.insert(News::latestNews.begin(), news);
-				pair<tuple<string, string, string>, News> keyValue = make_pair(make_tuple(news.getAdminUserName(), news.getTitle(), news.getDescription()), news);
-				News::allNews.insert(keyValue);
-				News::newsCategories[news.getCategory()].push_back(news);
+				news.setAdminFirstName(line[4]);
+				news.setAdminSecondName(line[5]);
+				news.setAvgRate(line[6]);
+				news.setDate(line[7]);
+				News::News_Container.insert({ news.getTitle(), news });
 			}
 
 			else {
@@ -223,4 +224,28 @@ void io_files::fetch_news_data()
 
 	*/
 	news_file.close();
+}
+
+void io_files::save_categories() {
+	ofstream category_file;
+	category_file.open("categories.txt", ios::trunc);
+	if (category_file.is_open()) {
+		for (auto category : Admin::categories) {
+			category_file << category << endl;
+		}
+	}
+	category_file.close();
+}
+
+void io_files::fetch_categories() {
+	string line;
+	ifstream category_file;
+	category_file.open("categories.txt", ios::in);
+	category_file.seekg(0);
+	if (category_file.is_open()) {
+		while (getline(category_file, line)) {
+			Admin::categories.insert(line);
+		}
+	}
+	category_file.close();
 }

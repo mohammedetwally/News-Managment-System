@@ -2,6 +2,7 @@
 #include<iostream>
 #include<string>
 # include<map>
+#include<set>
 using namespace std;
 class User
 {
@@ -11,6 +12,7 @@ protected:
 	string first_name;
 	string second_name;
 	string role;
+	set<string>preferredCategories;
 
 public:
 	User() {};
@@ -22,7 +24,6 @@ public:
 	string getRole();
 
 	// containers
-
 
 	// Setter methods
 	void setUserName(string username);
@@ -37,6 +38,7 @@ public:
 	void enter_second_name(string second_name, User& user);
 	void enter_password(string password, User& user);
 	void enter_username(string username, User& user);
+	void preferred_categories(User& user);
 
 	// User Functionalities
 	void user_register();

@@ -1,1 +1,3 @@
-﻿  News Managment System.vcxproj -> D:\My College\[2] Second Year\Semester (2)\Data Structure\Project\News-Managment-System\x64\Debug\News Managment System.exe
+﻿  Reader.cpp
+D:\Project\News-Managment-System\News Managment System\Reader.cpp(283,12): warning C4129: '=': unrecognized character escape sequence
+  News Managment System.vcxproj -> D:\Project\News-Managment-System\x64\Debug\News Managment System.exe

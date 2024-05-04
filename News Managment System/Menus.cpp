@@ -51,7 +51,7 @@ flag:
 		cout << "\t\t\t\t\t\t===================================" << endl;
 
 		user.login(user);
-		Menus::mainMenu(user);
+		//		Menus::mainMenu(user);
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	}
 
@@ -76,6 +76,8 @@ void Menus::Exit()
 	io_files::save_reader_data();
 	io_files::save_admin_data();
 	io_files::save_news_data();
+	io_files::save_categories();
+
 	system("pause");
 	exit(0);
 }
@@ -94,11 +96,12 @@ void Menus::adminMenu(Admin admin)
 		cout << "3. Update News\n";
 		cout << "4. Delete News\n";
 		cout << "5. Add Categories\n";
-		cout << "6. Rate a Title\n";
-		cout << "7. view Profile\n";
-		cout << "8. Edit Profile\n";
-		cout << "9. Log Out\n";
-		cout << "10. Exit\n";
+		cout << "6. Delete Categories\n";
+		cout << "7. Rate a Title\n";
+		cout << "8. view Profile\n";
+		cout << "9. Edit Profile\n";
+		cout << "10. Log Out\n";
+		cout << "11. Exit\n";
 	flag:
 
 		cout << "\nEnter your choice: ";
@@ -107,57 +110,77 @@ void Menus::adminMenu(Admin admin)
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			system("cls");
+			string choose;
 			admin.viewNewsArticles();
-			cout << "Press 1 when want to Back to Admin Menu\n";
+			cout << "Press 0 when want to Back to Admin Menu\n";
+			cin >> choose;
+			if (choose == "0")
+				adminMenu(admin);
+			else
+				admin.viewNewsArticles();
+
 		}
 		else if (choice == "2")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+			system("cls");
 			admin.addNews();
 		}
 		else if (choice == "3")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+			system("cls");
 			admin.editNews();
 		}
 		else if (choice == "4")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+			system("cls");
 			admin.removeNews();
 		}
 		else if (choice == "5")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			admin.addCategories();
+			system("cls");
+			admin.addCategory();
 		}
 		else if (choice == "6")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			admin.rateTitle();
+			system("cls");
+			admin.delete_category();
 		}
 		else if (choice == "7")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			admin.view_proile();
+			system("cls");
+			admin.rateTitle();
 		}
 		else if (choice == "8")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			admin.editProfile(); 
+			system("cls");
+			admin.view_proile();
 		}
 		else if (choice == "9")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			Menus::mainMenu(admin);
+			system("cls");
+			admin.editProfile();
 		}
 		else if (choice == "10")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+			Menus::mainMenu(admin);
+		}
+		else if (choice == "11")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			Menus::Exit();
 		}
 		else
 		{
-			cout << "Invalid choice. Please enter a number between 1 and 7.\n";
+			cout << "Invalid choice. Please enter a number between 1 and 11.\n";
 			goto flag;
 		}
 	}
@@ -170,16 +193,19 @@ void Menus::readerMenu(Reader reader)
 	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
 	cout << "\t\t\t\t\t\t\t\t            Reader Menu            " << endl;
 	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
-	cout << "1. Latest News" << endl;
-	cout << "2. Search by Category" << endl;
-	cout << "3. Search by Keyword" << endl;
-	cout << "4. Search by Title" << endl;
-	cout << "5. Bookmarked News" << endl;
-	cout << "6. Trending News" << endl;
-	cout << "7. view Profile" << endl;
-	cout << "8. Edit Profile" << endl;
-	cout << "9. Log Out" << endl;
-	cout << "10. Exit" << endl;
+	cout << "1. Notifications List" << endl;
+	cout << "2. Latest News" << endl;
+	cout << "3. Search by Category" << endl;
+	cout << "4. Search by Keyword" << endl;
+	cout << "5. Search by Title" << endl;
+	cout << "6. Search by Date" << endl;
+	cout << "7. Bookmarked News" << endl;
+	cout << "8. Trending News" << endl;
+	cout << "9. Show Preferred News" << endl;
+	cout << "10. view Profile" << endl;
+	cout << "11. Edit Profile" << endl;
+	cout << "12. Log Out" << endl;
+	cout << "13. Exit" << endl;
 	cout << "\nEnter your choice: ";
 flag01:
 	string choice;
@@ -187,49 +213,64 @@ flag01:
 	if (choice == "1")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.viewLatestNews();
+		// function for notifications
 	}
 	else if (choice == "2")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.categorySearch();
+		reader.viewLatestNews(News::News_Container);
 	}
 	else if (choice == "3")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.keywordSearch();
+		reader.categorySearch();
 	}
 	else if (choice == "4")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.titelSearch();
+		reader.keywordSearch();
 	}
 	else if (choice == "5")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.bookmarkNews();
+		reader.titelSearch();
 	}
 	else if (choice == "6")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.trendingNews();
+		reader.searchByDate();
 	}
 	else if (choice == "7")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.view_proile();
+		reader.bookmarkNews();
 	}
 	else if (choice == "8")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.edit_profile();
+		reader.trendingNews();
 	}
 	else if (choice == "9")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		Menus::mainMenu(reader);
+		reader.view_proile();
 	}
 	else if (choice == "10")
+	{
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+		reader.showPreferedNews();
+	}
+	else if (choice == "11")
+	{
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+		reader.edit_profile();
+	}
+	else if (choice == "12")
+	{
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+		Menus::mainMenu(reader);
+	}
+	else if (choice == "13")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		Menus::Exit();

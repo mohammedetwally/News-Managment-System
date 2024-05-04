@@ -1,5 +1,7 @@
 #pragma once
 #include"User.h"
+#include"News.h"
+#include<unordered_map>
 class Reader : public User
 {
 public:
@@ -13,12 +15,14 @@ public:
 	// Reader Functionalities
 	void edit_profile();
 	void view_proile();
-	void viewLatestNews();
+	void viewLatestNews(unordered_map<string, News> newsContainer);
 	void categorySearch();
 	void keywordSearch();
+	void searchByDate();
 	void displayCategories();
 	void rateNews();
 	void bookmarkNews();
 	void trendingNews();
 	void titelSearch();
+	void showPreferedNews();
 };

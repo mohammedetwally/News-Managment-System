@@ -14,4 +14,6 @@ public:
     static void save_reader_data();
     static void save_news_data();
     static void fetch_news_data();
+    static void save_categories();
+    static void fetch_categories();
 };

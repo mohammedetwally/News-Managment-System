@@ -2,8 +2,6 @@
 #include<iostream>
 #include<string>
 #include<unordered_map>
-#include<queue>
-#include<map>
 using namespace std;
 class News
 {
@@ -17,10 +15,12 @@ protected:
 	string average_rate = "3.0";
 	string category;
 	string adminUserName;
+	string adminFirstName;
+	string adminSecondName;
 public:
 
 	// Constructors
-	
+
 
 	// Getters
 	string getTitle();
@@ -29,6 +29,9 @@ public:
 	string getRate();
 	string getCategory();
 	string getAdminUserName();
+	string getAdminFirstName();
+	string getAdminSecondName();
+
 
 	// Setters
 	void setTitle(string title);
@@ -36,12 +39,10 @@ public:
 	void setDate(string date);
 	void setCategory(string category);
 	void setAdminUserName(string adminUserName);
+	void setAdminFirstName(string adminFirstName);
+	void setAdminSecondName(string adminSecondName);
 	void setAvgRate(string avg);
 	void addNewRate(string rate);
 	// container
-	static vector<News> latestNews; // Contain news sorted with date
-	typedef map<string, vector<News>>Graph;
-
-	static Graph newsCategories; // contain a key which is category and an data which is News
-	static map<tuple<string, string, string> ,News> allNews; // Contain all news with a key which is Admin's username
+	static unordered_map<string, News> News_Container;
 };

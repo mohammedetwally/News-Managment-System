@@ -33,6 +33,15 @@ string News::getAdminUserName()
     return adminUserName;
 }
 
+string News::getAdminFirstName()
+{
+    return adminFirstName;
+}
+
+string News::getAdminSecondName()
+{
+    return adminSecondName;
+}
 
 
 // Setters
@@ -53,7 +62,8 @@ void News::setDate(string date)
 
 
 
-void News::addNewRate(string rate) {
+void News::addNewRate(string rate) 
+{
     rates.push_back(stoi(rate));
 }
 
@@ -67,7 +77,16 @@ void News::setAdminUserName(string adminUserName)
     this->adminUserName = adminUserName;
 }
 
+void News::setAdminFirstName(string adminFirstName)
+{
+    this->adminFirstName = adminFirstName;
+}
+void News::setAdminSecondName(string adminSecondName)
+{
+    this->adminSecondName = adminSecondName;
+}
 
-void News::setAvgRate(string avg) {
+void News::setAvgRate(string avg) 
+{
     this->average_rate = avg;
 }

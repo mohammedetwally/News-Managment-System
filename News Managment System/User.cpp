@@ -13,6 +13,7 @@
 
 
 
+
 // Getters
 string User::getFirstName()
 {
@@ -264,6 +265,7 @@ flag:
 			pair<string, string>p;
 			p.first = this->getUserName();
 			p.second = this->getPassword();
+			preferred_categories(*this);
 
 			pair<string, User> keyValue = make_pair(this->getUserName(), *this);
 			Reader::reader_container.insert(keyValue);
@@ -282,9 +284,7 @@ flag:
 		cout << "\nPassword is not matching !!\n";
 		goto flag;
 	}
-
-
-
+	Menus::mainMenu(*this);
 }
 
 void User::login(User user)
@@ -324,6 +324,8 @@ void User::login(User user)
 			else
 			{
 				cout << "Invalid Username or Password";
+			flag2001:
+
 				cout << "\n1 -> Try again\n2 -> Back to main Menus";
 				cout << "\nEnter your choice: ";
 				cin >> check;
@@ -331,6 +333,11 @@ void User::login(User user)
 					login(reader_it->second);
 				else if (check == "2")
 					Menus::mainMenu(user);
+				else
+				{
+					cout << "Invalid choice .... Please try again";
+					goto flag2001;
+				}
 			}
 		}
 		else if (admin_it != Admin::admin_container.end())
@@ -343,7 +350,8 @@ void User::login(User user)
 			}
 			else
 			{
-				cout << "Invalid Username or Password";
+			flag2002:
+				cout << "\nInvalid Username or Password";
 				cout << "\n1 -> Try again\n2 -> Back to main Menus";
 				cout << "\nEnter your choice: ";
 				cin >> check;
@@ -351,6 +359,11 @@ void User::login(User user)
 					login(admin_it->second);
 				else if (check == "2")
 					Menus::mainMenu(user);
+				else
+				{
+					cout << "Invalid choice .... Please try again";
+					goto flag2002;
+				}
 			}
 		}
 		else
@@ -389,7 +402,11 @@ void User::login(User user)
 		cout << "\nEnter your choice: ";
 		cin >> choose;
 		if (choose == "1")
+		{
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+			system("cls");
 			user.user_register();
+		}
 		else if (choose == "2")
 			Menus::mainMenu(user);
 		else if (choose == "3")
@@ -400,4 +417,52 @@ void User::login(User user)
 			goto flag;
 		}
 	}
+}
+
+
+void User::preferred_categories(User& user)
+{
+	int counter = 1;
+	map<int, string>link;
+	cout << "the categories allowed\n";
+	for (auto category : Admin::categories)
+	{
+		cout << counter << " - " << category << endl;
+		link[counter] = category;
+		counter++;
+	}
+	if (Admin::categories.empty())
+	{
+		cout << "no categories\n";
+	}
+	for (int i = 1; i <= 3; i++)
+	{
+		cout << "\nChoose from the list of categories\n\n";
+		int choice;
+		cin >> choice;
+		if (choice <= link.size())
+		{
+			if (preferredCategories.find(link[choice]) == preferredCategories.end())
+			{
+				preferredCategories.emplace(link[choice]);
+				cout << "The category was added successfully\n";
+			}
+			else
+			{
+				cout << "you have choose it before .............please choose another one\n";
+				i--;
+			}
+		}
+		else if (choice > 3 || choice < 1)
+		{
+			cout << "invalid value please try again";
+			i--;
+		}
+		if (i == 3 && link.size() == 3)
+		{
+			cout << "your categoriese was added successfully\n";
+		}
+	}
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(500));
+
 }

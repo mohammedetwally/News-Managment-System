@@ -1,6 +1,8 @@
 #pragma once
 #include<iostream>
 #include<string>
+#include <sstream>
+#include <iomanip>
 #include"User.h"
 #include"Admin.h"
 #include"Reader.h"
@@ -19,4 +21,7 @@ public:
 	static bool title_description_Test(string title_description);
 	static bool category_test(string category);
 	static bool rate_test(string rate);
+	static bool compareByDate(pair<string, News> a, pair<string, News> b);
+	static bool isDate(string inputStr);
+	static string extractDate(string fullDate);
 };
