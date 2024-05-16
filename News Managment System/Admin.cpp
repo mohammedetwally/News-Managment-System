@@ -148,6 +148,8 @@ void Admin::viewProfile()
 			cout << "\nDescription: " << admin.second.getDescription();
 		}
 	}
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+	Menus::adminMenu(*this);
 }
 
 // News management
