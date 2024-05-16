@@ -1,21 +1,22 @@
 #include <windows.h>
 #include <thread>
 #include <conio.h> 
-#include<iostream>
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include<vector>
+#include <vector>
 #include "Admin.h"
-#include<unordered_map>
-#include"Test.h"
+#include <unordered_map>
+#include "Test.h"
 #include "Menus.h"
-#include"News.h"
+#include "News.h"
+
 using namespace std;
 unordered_map<string, News> News::News_Container;
 map<string, User> Admin::admin_container;
 set<string> Admin::categories;
 
-// For Editing Admin's Exsit Data
+// For editing admin's existing data
 void Admin::editProfile()
 {
 	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
@@ -126,7 +127,7 @@ flag:
 	Menus::adminMenu(*this);
 }
 
-void Admin::view_proile()
+void Admin::viewProfile()
 {
 
 	// Display current profile information
@@ -135,109 +136,21 @@ void Admin::view_proile()
 	cout << "Password: " << this->password << endl;
 	cout << "First Name: " << this->first_name << endl;
 	cout << "Second Name: " << this->second_name << endl;
-	string choose;
-	cout << "\n\nPress 0 when want to Back to Admin Menu\n";
-	cin >> choose;
-	if (choose == "0")
-		Menus::adminMenu(*this);
-	else
-		view_proile();
-}
-
-void Admin::delete_category()
-{
-flag2019:
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
-	system("cls");
-	cout << "\nTAKE CARE !! Deleting any category will cause to delete the news which belongs to this category\n";
-	cout << "1 -> Continue\n2 -> Back to your menu";
-	cout << "\nEnter your choice: ";
-	string check;
-	cin >> check;
-	if (check == "2")
+	for (auto admin : News::News_Container)
 	{
-		Menus::adminMenu(*this);
-	}
-	else if (check != "1" && check != "2")
-	{
-		cout << "Invali choice .... Please try again";
-		goto flag2019;
-	}
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
-	if (Admin::categories.empty())
-	{
-		cout << "\nThere is no categories to delete\n";
-		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
-
-		Menus::adminMenu(*this);
-	}
-	else
-	{
-		int i = 1;
-		cout << "---------------------------------------------------------------------------------------------------------";
-		cout << "\nThe exsisting categories are: \n";
-		for (auto a : categories)
+		if (this->getUserName() == admin.second.getAdminUserName())
 		{
-			cout << i << ". " << a << "\n";
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
-			i++;
-		}
-		int categoryNumber = 0;
-		while (true)
-		{
-		flag:
-			cout << "Enter the number of the Category you want to remove: ";
-			cin >> categoryNumber;
-			// If input is out of range, handle error
-			if (categoryNumber < 1 || categoryNumber > Admin::categories.size()) {
-				cout << "Invalid category number. Please enter a valid number.\n";
-				goto flag;
-			}
-
-			// Input is valid, break out of the loop
-			else {
-				break;
-			}
-		}
-		// Find the category corresponding to the selected number
-		auto it = Admin::categories.begin();
-		advance(it, categoryNumber - 1);
-		string selected_category = *it;
-
-
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		// Delete all News From this category
-		int numDeleted = 0;
-		for (auto it = News::News_Container.begin(); it != News::News_Container.end();)
-		{
-			if (it->second.getCategory() == selected_category) // assume category is a member of the news item
-			{
-				it = News::News_Container.erase(it);
-				numDeleted++;
-			}
-			else
-			{
-				++it;
-			}
-		}
-
-
-		// Remove the category from the container
-		Admin::categories.erase(it);
-		cout << "Category removed successfully.\n";
-		cout << endl << numDeleted << " news items in the category have been deleted.\n";
-		cout << "\nThe exsisting categories are: \n";
-		int j = 1;
-		for (auto a : categories)
-		{
-			cout << j << ". " << a << "\n";
-			j++;
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
+			cout << "Title: " << admin.second.getTitle();
+			cout << "\nPublished by: " << admin.second.getAdminFirstName() << " " << admin.second.getAdminSecondName();
+			cout << "\nCategory: " << admin.second.getCategory();
+			cout << "\nDate: " << admin.second.getDate();
+			cout << "\nRating: " << admin.second.getRate();
+			cout << "\nDescription: " << admin.second.getDescription();
 		}
 	}
 }
 
+// News management
 void Admin::addNews()
 {
 	// Adds The Lastest News
@@ -332,9 +245,98 @@ flag03:
 	}
 }
 
+void Admin::editNews() {
 
-///////////////////////////////////////////////////////
-// Remove Function 
+	// Display articles to select
+
+	system("cls");
+	cout << "\t\t\t\t\t\t===================================" << endl;
+	cout << "\t\t\t\t\t\t          Edit News             " << endl;
+	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
+
+
+	// Ask for the title of the article to edit
+	int titleToEdit;
+	cout << "\nEnter the number of the article you want to update: ";
+	int i = 0;
+	for (auto news_To_Update : News::News_Container)
+	{
+		cout << "\n" << i + 1 << ": " << news_To_Update.second.getTitle();
+		i++;
+	}
+	cin.ignore();
+	cin >> titleToEdit;
+	bool check;
+	if (titleToEdit > News::News_Container.size())
+	{
+		check = true;
+	}
+	else
+	{
+		check = false;
+	}
+	titleToEdit -= 1;
+
+	// Search for the article by title
+	if (!check) {
+
+
+		//check = false;
+
+		// Display current details of the article
+		unordered_map<string, News>::iterator it;
+		it = News::News_Container.begin();
+		it = next(it, titleToEdit);
+		News* new_to_edit = &(it->second);
+		new_to_edit->getCategory();
+
+		cout << "News Title: " << new_to_edit->getTitle() << endl;
+		cout << "News Description: " << new_to_edit->getDescription() << endl;
+		cout << "News Category: " << new_to_edit->getCategory() << endl;
+		cout << "News Date: " << new_to_edit->getDate() << endl;
+
+		// Prompt for new details
+		string newTitle, newDescription, newCategory;
+		cout << "\nEnter new details (press Enter to keep the current value):\n";
+
+		cout << "New Title: ";
+		getline(cin, newTitle);
+		if (!newTitle.empty()) {
+			new_to_edit->setTitle(newTitle);
+		}
+
+		cout << "New Description: ";
+		getline(cin, newDescription);
+		if (!newDescription.empty()) {
+			new_to_edit->setTitle(newDescription);
+		}
+
+		cout << "New Category: ";
+		getline(cin, newCategory);
+		if (!newCategory.empty()) {
+			new_to_edit->setTitle(newCategory);
+		}
+
+		// Update the date
+		new_to_edit->setDate(Menus::getCurrentDate());
+
+		// Display updated details
+		cout << "\nUpdated Details of the Article:\n";
+		cout << "News Title: " << new_to_edit->getTitle() << endl;
+		cout << "News Description: " << new_to_edit->getDescription() << endl;
+		cout << "News Category: " << new_to_edit->getCategory() << endl;
+		cout << "News Date: " << new_to_edit->getDate() << endl;
+
+		cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
+	}
+
+
+
+	if (check)
+		cout << "\narticle with the number \"" << titleToEdit << "\" not found.\n";
+
+	Menus::adminMenu(*this);
+}
 
 void Admin::removeNews()
 {
@@ -429,35 +431,13 @@ void Admin::rateTitle()
 			cout << "News Description: " << news_To_Rate.second.getDescription() << endl;
 			cout << "News Category: " << news_To_Rate.second.getCategory() << endl;
 			cout << "News Date: " << news_To_Rate.second.getDate() << endl;
-			float avgRate = 0.0;
-			if (news_To_Rate.second.rates.size() == 0) {
-				avgRate = 3.0;
-			}
-			else {
-				for (auto r : news_To_Rate.second.rates) {
-					avgRate += r;
-				}
-				avgRate /= news_To_Rate.second.rates.size();
-				avgRate = round(avgRate);
-			}
-
-			news_To_Rate.second.setAvgRate(to_string(avgRate));
-			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+			news_To_Rate.second.calcRate();
 			cout << "Average Rate: " << news_To_Rate.second.getRate() << endl;
 		}
 	}
 }
 
-
-//
-//	FUNCTIONS NOTES --- PLEASE READ NIGGA
-//	This function adds a category with an empty <News> vector.
-//  The category isn't saved because the "save in file" function takes the categories directly from the <News> object.
-//  You have to save the names of the categories somewhere else, or at the beginning of the news file
-//  Also, consider that at the current moment, deleting a category results in the deletion of all the news in that category,
-//  so we have to implement a non-deletable category called "Uncategorized" that takes all the news that don't exist in a category,
-//  or any news that has "" string in the category field.
-//
+// Categories management
 void Admin::addCategory() {
 
 	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
@@ -502,95 +482,96 @@ flag11:
 	}
 }
 
-void Admin::editNews() {
-
-	// Display articles to select
-
+void Admin::delete_category()
+{
+flag2019:
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
 	system("cls");
-	cout << "\t\t\t\t\t\t===================================" << endl;
-	cout << "\t\t\t\t\t\t          Edit News             " << endl;
-	cout << "\t\t\t\t\t\t===================================\n\n" << endl;
-
-
-	// Ask for the title of the article to edit
-	int titleToEdit;
-	cout << "\nEnter the number of the article you want to update: ";
-	int i = 0;
-	for (auto news_To_Update : News::News_Container)
+	cout << "\nTAKE CARE !! Deleting any category will cause to delete the news which belongs to this category\n";
+	cout << "1 -> Continue\n2 -> Back to your menu";
+	cout << "\nEnter your choice: ";
+	string check;
+	cin >> check;
+	if (check == "2")
 	{
-		cout << "\n" << i + 1 << ": " << news_To_Update.second.getTitle();
-		i++;
+		Menus::adminMenu(*this);
 	}
-	cin.ignore();
-	cin >> titleToEdit;
-	bool check;
-	if (titleToEdit > News::News_Container.size())
+	else if (check != "1" && check != "2")
 	{
-		check = true;
+		cout << "Invali choice .... Please try again";
+		goto flag2019;
+	}
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
+	if (Admin::categories.empty())
+	{
+		cout << "\nThere is no categories to delete\n";
+		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
+
+		Menus::adminMenu(*this);
 	}
 	else
 	{
-		check = false;
+		int i = 1;
+		cout << "---------------------------------------------------------------------------------------------------------";
+		cout << "\nThe exsisting categories are: \n";
+		for (auto a : categories)
+		{
+			cout << i << ". " << a << "\n";
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
+			i++;
+		}
+		int categoryNumber = 0;
+		while (true)
+		{
+		flag:
+			cout << "Enter the number of the Category you want to remove: ";
+			cin >> categoryNumber;
+			// If input is out of range, handle error
+			if (categoryNumber < 1 || categoryNumber > Admin::categories.size()) {
+				cout << "Invalid category number. Please enter a valid number.\n";
+				goto flag;
+			}
+
+			// Input is valid, break out of the loop
+			else {
+				break;
+			}
+		}
+		// Find the category corresponding to the selected number
+		auto it = Admin::categories.begin();
+		advance(it, categoryNumber - 1);
+		string selected_category = *it;
+
+
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		// Delete all News From this category
+		int numDeleted = 0;
+		for (auto it = News::News_Container.begin(); it != News::News_Container.end();)
+		{
+			if (it->second.getCategory() == selected_category) // assume category is a member of the news item
+			{
+				it = News::News_Container.erase(it);
+				numDeleted++;
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+
+		// Remove the category from the container
+		Admin::categories.erase(it);
+		cout << "Category removed successfully.\n";
+		cout << endl << numDeleted << " news items in the category have been deleted.\n";
+		cout << "\nThe exsisting categories are: \n";
+		int j = 1;
+		for (auto a : categories)
+		{
+			cout << j << ". " << a << "\n";
+			j++;
+			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(1000));
+		}
 	}
-	titleToEdit -= 1;
-
-	// Search for the article by title
-	if (!check) {
-
-
-		//check = false;
-
-		// Display current details of the article
-		unordered_map<string, News>::iterator it;
-		it = News::News_Container.begin();
-		it = next(it, titleToEdit);
-		News* new_to_edit = &(it->second);
-		new_to_edit->getCategory();
-
-		cout << "News Title: " << new_to_edit->getTitle() << endl;
-		cout << "News Description: " << new_to_edit->getDescription() << endl;
-		cout << "News Category: " << new_to_edit->getCategory() << endl;
-		cout << "News Date: " << new_to_edit->getDate() << endl;
-
-		// Prompt for new details
-		string newTitle, newDescription, newCategory;
-		cout << "\nEnter new details (press Enter to keep the current value):\n";
-
-		cout << "New Title: ";
-		getline(cin, newTitle);
-		if (!newTitle.empty()) {
-			new_to_edit->setTitle(newTitle);
-		}
-
-		cout << "New Description: ";
-		getline(cin, newDescription);
-		if (!newDescription.empty()) {
-			new_to_edit->setTitle(newDescription);
-		}
-
-		cout << "New Category: ";
-		getline(cin, newCategory);
-		if (!newCategory.empty()) {
-			new_to_edit->setTitle(newCategory);
-		}
-
-		// Update the date
-		new_to_edit->setDate(Menus::getCurrentDate());
-
-		// Display updated details
-		cout << "\nUpdated Details of the Article:\n";
-		cout << "News Title: " << new_to_edit->getTitle() << endl;
-		cout << "News Description: " << new_to_edit->getDescription() << endl;
-		cout << "News Category: " << new_to_edit->getCategory() << endl;
-		cout << "News Date: " << new_to_edit->getDate() << endl;
-
-		cout << "\nNews article \"" << titleToEdit << "\" has been updated successfully.\n";
-	}
-
-
-
-	if (check)
-		cout << "\narticle with the number \"" << titleToEdit << "\" not found.\n";
-
-	Menus::adminMenu(*this);
 }

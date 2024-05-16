@@ -1,5 +1,5 @@
-# include<iostream>
-# include<string>
+#include <iostream>
+#include <string>
 #include <windows.h>
 #include <thread>
 #include <conio.h> 
@@ -8,14 +8,16 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
-#include"User.h"
-#include"Admin.h"
-#include"Reader.h"
+#include "User.h"
+#include "Admin.h"
+#include "Reader.h"
 #include "Menus.h"
 #include "io_files.h"
 
-void Menus::mainMenu(User user)
+
+void Menus::mainMenu()
 {
+	User user;
 	string choice;
 	system("cls");
 flag:
@@ -77,6 +79,7 @@ void Menus::Exit()
 	io_files::save_admin_data();
 	io_files::save_news_data();
 	io_files::save_categories();
+	io_files::save_comments();
 
 	system("pause");
 	exit(0);
@@ -160,7 +163,7 @@ void Menus::adminMenu(Admin admin)
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 			system("cls");
-			admin.view_proile();
+			admin.viewProfile();
 		}
 		else if (choice == "9")
 		{
@@ -171,7 +174,7 @@ void Menus::adminMenu(Admin admin)
 		else if (choice == "10")
 		{
 			this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-			Menus::mainMenu(admin);
+			Menus::mainMenu();
 		}
 		else if (choice == "11")
 		{
@@ -188,6 +191,9 @@ void Menus::adminMenu(Admin admin)
 
 void Menus::readerMenu(Reader reader)
 {
+	for (int i = 0; i < reader.bookmarking_container.size(); i++) {
+		reader.bookmarking_container[i]->bookmarkedOrNo = true;
+	}
 	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 	system("cls");
 	cout << "\t\t\t\t\t\t\t\t===================================" << endl;
@@ -202,7 +208,7 @@ void Menus::readerMenu(Reader reader)
 	cout << "7. Bookmarked News" << endl;
 	cout << "8. Trending News" << endl;
 	cout << "9. Show Preferred News" << endl;
-	cout << "10. view Profile" << endl;
+	cout << "10. View Profile" << endl;
 	cout << "11. Edit Profile" << endl;
 	cout << "12. Log Out" << endl;
 	cout << "13. Exit" << endl;
@@ -213,12 +219,12 @@ flag01:
 	if (choice == "1")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		// function for notifications
+		reader.notifications();
 	}
 	else if (choice == "2")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.viewLatestNews(News::News_Container);
+		reader.viewLatestNews();
 	}
 	else if (choice == "3")
 	{
@@ -233,17 +239,18 @@ flag01:
 	else if (choice == "5")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.titelSearch();
+		reader.titleSearch();
 	}
 	else if (choice == "6")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
 		reader.searchByDate();
+		cin.ignore();
 	}
 	else if (choice == "7")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.bookmarkNews();
+		reader.viewBookmarkedNews();
 	}
 	else if (choice == "8")
 	{
@@ -253,12 +260,12 @@ flag01:
 	else if (choice == "9")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.view_proile();
+		reader.showPreferredNews();
 	}
 	else if (choice == "10")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		reader.showPreferedNews();
+		reader.view_profile();
 	}
 	else if (choice == "11")
 	{
@@ -268,16 +275,20 @@ flag01:
 	else if (choice == "12")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
-		Menus::mainMenu(reader);
+		Reader::reader_container[reader.getUserName()].setLastLoginDateAsCurrent();
+		Menus::mainMenu();
 	}
 	else if (choice == "13")
 	{
 		this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+		reader.removeAllBookmarkedNewsFromNewsContainer();
+		Reader::reader_container[reader.getUserName()].bookmarking_container = reader.bookmarking_container;
+		Reader::reader_container[reader.getUserName()].setLastLoginDateAsCurrent();
 		Menus::Exit();
 	}
 	else
 	{
-		cout << "Invalid choice. Please enter a number between 1 and 6." << endl;
+		cout << "Invalid choice. Please enter a number between 1 and 13." << endl;
 		goto flag01;
 	}
 }

@@ -1,5 +1,5 @@
-# include<iostream>
-# include<string>
+#include <iostream>
+#include <string>
 #include <windows.h>
 #include <thread>
 #include <conio.h> 
@@ -8,18 +8,13 @@
 #include "Test.h"
 #include "Menus.h"
 #include "Admin.h"
-#include"Reader.h"
-# include<map>
-
-
-
+#include "Reader.h"
 
 // Getters
 string User::getFirstName()
 {
 	return first_name;
 }
-
 string User::getSecondName()
 {
 	return second_name;
@@ -29,48 +24,58 @@ string User::getUserName()
 {
 	return user_name;
 }
-
 string User::getPassword()
 {
 	return password;
 }
-
 string User::getRole()
 {
 	return role;
 }
 
+string User::getLastLoginDate() {
+	return lastLoginDate;
+}
+
+set<string> User::getPreferredCategories() {
+	return preferredCategories;
+}
+
 // Setters
-void User::setUserName(string username)
-{
-	user_name = username;
-}
-
-void User::setPassword(string pass)
-{
-	password = pass;
-}
-
 void User::setFirstName(string first_name)
 {
 	this->first_name = first_name;
 }
-
 void User::setSecondName(string second_name)
 {
 	this->second_name = second_name;
 }
 
+void User::setUserName(string username)
+{
+	user_name = username;
+}
+void User::setPassword(string pass)
+{
+	password = pass;
+}
 void User::setRole(string role)
 {
 	this->role = role;
 }
 
+void User::setLastLoginDate(string date) {
+	lastLoginDate = date;
+}
+void User::setLastLoginDateAsCurrent() {
+	lastLoginDate = Menus::getCurrentDate();
+}
 
+void User::setPreferredCategories(string preferredCategory) {
+	preferredCategories.insert(preferredCategory);
+}
 
-// taking data from user
-
-   // First Name
+// registeration functions
 void User::enter_first_name(string first_name, User& user)
 {
 	if (Test::names_test(first_name))
@@ -85,8 +90,6 @@ void User::enter_first_name(string first_name, User& user)
 		enter_first_name(f_name, user);
 	}
 }
-
-// Second Name
 void User::enter_second_name(string second_name, User& user)
 {
 	if (Test::names_test(second_name))
@@ -101,8 +104,6 @@ void User::enter_second_name(string second_name, User& user)
 		enter_second_name(s_name, user);
 	}
 }
-
-// Password
 void User::enter_password(string password, User& user)
 {
 	if (Test::space_test(password))
@@ -117,8 +118,6 @@ void User::enter_password(string password, User& user)
 		enter_password(pass, user);
 	}
 }
-
-// Username
 void User::enter_username(string username, User& user)
 {
 	if (Test::space_test(username))
@@ -133,40 +132,76 @@ void User::enter_username(string username, User& user)
 		enter_username(user_name, user);
 	}
 }
+void User::preferred_categories(User& user)
+{
+	int counter = 1;
+	map<int, string>link;
+	cout << "the categories allowed\n";
+	for (auto category : Admin::categories)
+	{
+		cout << counter << " - " << category << endl;
+		link[counter] = category;
+		counter++;
+	}
+	if (Admin::categories.empty())
+	{
+		cout << "no categories\n";
+	}
+	int count = 0;
+	for (int i = 1; i <= 3; i++)
+	{
+		cout << "\nChoose from the list of categories\n\n";
+		int choice;
+		cin >> choice;
+		if (choice <= link.size())
+		{
+			if (preferredCategories.find(link[choice]) == preferredCategories.end())
+			{
+				preferredCategories.emplace(link[choice]);
+				cout << "The category was added successfully\n";
+			}
+			else
+			{
+				cout << "you have choose it before .............please choose another one\n";
+				i--;
+			}
+		}
+		else if (choice > 3 || choice < 1)
+		{
+			cout << "invalid value please try again";
+			i--;
+		}
+		count = i;
+	}
+	if (count == 3 && link.size() == 3)
+	{
+		cout << "your categoriese was added successfully\n";
+	}
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::milliseconds(500));
+
+}
 
 void User::user_register()
 {
 	int strength;
 	// First Name Entry
-flag1:
 	cout << "\nEnter your first name: ";
 	string first_name;
 	cin.ignore();
 	getline(cin, first_name);
 	enter_first_name(first_name, *this);
-	if (!Test::names_test)
-	{
-		cout << "Invalid Name ..... Please Try Again";
-		goto flag1;
-	}
 
 	// Second Name Entry
-flag2:
 	cout << "\nEnter your second name: ";
 	string second_name;
 	getline(cin, second_name);
 	enter_second_name(second_name, *this);
-	if (!Test::names_test)
-	{
-		cout << "Invalid Name ..... Please Try Again";
-		goto flag2;
-	}
-
 	// Username Entry
 flag3:
 	cout << "\nEnter your username: ";
 	string username;
 	getline(cin, username);
+	enter_username(username, *this);
 	for (auto check : Admin::admin_container)
 	{
 		if (check.second.getUserName() == username)
@@ -183,15 +218,8 @@ flag3:
 			goto flag3;
 		}
 	}
-	enter_username(username, *this);
-	if (!Test::user_check)
-	{
-		cout << "Invalid Name ..... Please Try Again";
-		goto flag3;
-	}
 
 	// Password Entry
-
 flag:
 	cout << "\nEnter your password: ";
 	string password;
@@ -258,6 +286,7 @@ flag:
 		{
 			cout << "\nStrong Password !!\n";
 		}
+
 		// Reader or Admin Registeration
 		*this = Test::adminOrReader(*this);
 		if (this->getRole() == "reader")
@@ -284,7 +313,8 @@ flag:
 		cout << "\nPassword is not matching !!\n";
 		goto flag;
 	}
-	Menus::mainMenu(*this);
+	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(5));
+	Menus::mainMenu();
 }
 
 void User::login(User user)
@@ -332,7 +362,7 @@ void User::login(User user)
 				if (check == "1")
 					login(reader_it->second);
 				else if (check == "2")
-					Menus::mainMenu(user);
+					Menus::mainMenu();
 				else
 				{
 					cout << "Invalid choice .... Please try again";
@@ -358,7 +388,7 @@ void User::login(User user)
 				if (check == "1")
 					login(admin_it->second);
 				else if (check == "2")
-					Menus::mainMenu(user);
+					Menus::mainMenu();
 				else
 				{
 					cout << "Invalid choice .... Please try again";
@@ -378,7 +408,7 @@ void User::login(User user)
 			if (decision == "1")
 				login(user);
 			else if (decision == "2")
-				Menus::mainMenu(user);
+				Menus::mainMenu();
 			else if (decision == "3")
 				Menus::Exit();
 			else
@@ -408,7 +438,7 @@ void User::login(User user)
 			user.user_register();
 		}
 		else if (choose == "2")
-			Menus::mainMenu(user);
+			Menus::mainMenu();
 		else if (choose == "3")
 			Menus::Exit();
 		else
@@ -417,52 +447,4 @@ void User::login(User user)
 			goto flag;
 		}
 	}
-}
-
-
-void User::preferred_categories(User& user)
-{
-	int counter = 1;
-	map<int, string>link;
-	cout << "the categories allowed\n";
-	for (auto category : Admin::categories)
-	{
-		cout << counter << " - " << category << endl;
-		link[counter] = category;
-		counter++;
-	}
-	if (Admin::categories.empty())
-	{
-		cout << "no categories\n";
-	}
-	for (int i = 1; i <= 3; i++)
-	{
-		cout << "\nChoose from the list of categories\n\n";
-		int choice;
-		cin >> choice;
-		if (choice <= link.size())
-		{
-			if (preferredCategories.find(link[choice]) == preferredCategories.end())
-			{
-				preferredCategories.emplace(link[choice]);
-				cout << "The category was added successfully\n";
-			}
-			else
-			{
-				cout << "you have choose it before .............please choose another one\n";
-				i--;
-			}
-		}
-		else if (choice > 3 || choice < 1)
-		{
-			cout << "invalid value please try again";
-			i--;
-		}
-		if (i == 3 && link.size() == 3)
-		{
-			cout << "your categoriese was added successfully\n";
-		}
-	}
-	this_thread::sleep_until(chrono::steady_clock::now() + chrono::seconds(500));
-
 }

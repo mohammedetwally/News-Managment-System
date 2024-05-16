@@ -2,7 +2,9 @@
 #include <windows.h>
 #include <thread>
 #include <conio.h> 
-#include <cstdlib>
+#include <stack>
+#include "Reader.h"
+
 /*
 	Username
 	Passward
@@ -10,7 +12,7 @@
 	Second Name
 */
 
-// Admin
+// ADMIN
 void io_files::save_admin_data() {
 
 	ofstream admin_file;
@@ -72,13 +74,8 @@ void io_files::fetch_admin_data() {
 	}*/
 }
 
-
-
 // READER
 void io_files::save_reader_data() {
-
-	string line[4];
-	int count = 0;
 	ofstream reader_file;
 	reader_file.open("reader.txt", ios::trunc);
 
@@ -88,6 +85,16 @@ void io_files::save_reader_data() {
 			reader_file << t.second.getPassword() << endl;
 			reader_file << t.second.getFirstName() << endl;
 			reader_file << t.second.getSecondName() << endl;
+			reader_file << t.second.getLastLoginDate() << endl;
+			set<string> preferredCategories = t.second.getPreferredCategories();
+			for (auto it = preferredCategories.begin(); it != preferredCategories.end(); it++) {
+				reader_file << *it << endl;
+			}
+			reader_file << "start\n";
+			for (int i = 0; i < t.second.bookmarking_container.size(); i++) {
+				reader_file << t.second.bookmarking_container[i]->getTitle() << endl;
+			}
+			reader_file << "end\n";
 		}
 	}
 	reader_file.close();
@@ -95,22 +102,38 @@ void io_files::save_reader_data() {
 
 void io_files::fetch_reader_data() {
 
-	string line[4];
+	string line[9];
 	int count = 0;
 	ifstream reader_file;
 	reader_file.open("reader.txt", ios::in);
 	reader_file.seekg(0);
+	Reader reader, emptyReader;
 	if (reader_file.is_open()) {
 		while (getline(reader_file, line[count])) {
-			// add admin to DS
-			if (count == 3) {
-				Reader reader;
-				count = 0;
-				reader.setUserName(line[0]);
-				reader.setPassword(line[1]);
-				reader.setFirstName(line[2]);
-				reader.setSecondName(line[3]);
-				Reader::reader_container.insert({ reader.getUserName() , reader });
+			if (line[count] == "start") {
+				string title;
+				while (getline(reader_file, title)) {
+					if (title == "end") {
+						count = 0;
+						reader.setUserName(line[0]);
+						reader.setPassword(line[1]);
+						reader.setFirstName(line[2]);
+						reader.setSecondName(line[3]);
+						reader.setLastLoginDate(line[4]);
+						// Uncomment this if you wish to reset readers' date
+						// to a value that shows some notifications
+						//reader.setLastLoginDate("2022-09-15 00:00:00");
+						reader.setPreferredCategories(line[5]);
+						reader.setPreferredCategories(line[6]);
+						reader.setPreferredCategories(line[7]);
+						Reader::reader_container.insert({ reader.getUserName() , reader });
+						reader = emptyReader;
+						break;
+					}
+					else {
+						reader.bookmarking_container.push_back(&News::News_Container[title]);
+					}
+				}
 			}
 			else {
 				count++;
@@ -118,19 +141,9 @@ void io_files::fetch_reader_data() {
 		}
 	}
 	reader_file.close();
-	/* int i = 1;
-	 for (auto t : Reader::reader_container) {
-		 cout << "Reader" << " [" << i << "]" << " | KEY: " << t.first << endl;
-		 cout << "VALUE: \n";
-		 cout << "\t" << t.second.getUserName() << endl;
-		 cout << "\t" << t.second.getPassword() << endl;
-		 cout << "\t" << t.second.getFirstName() << endl;
-		 cout << "\t" << t.second.getSecondName() << endl;
-		 i++;
-	 }*/
 }
 
-
+// NEWS
 void io_files::save_news_data() {
 
 	ofstream news_file;
@@ -146,10 +159,16 @@ void io_files::save_news_data() {
 			news_file << t.second.getAdminSecondName() << endl;
 			news_file << t.second.getRate() << endl;
 			news_file << "start_rates" << endl;
-			for (auto r : t.second.rates) {
-				news_file << r << endl;
+			for (auto r : t.second.newsRates) {
+				news_file << r.first << endl;
+				news_file << r.second << endl;
 			}
 			news_file << "end_rates" << endl;
+			news_file << "start_spam" << endl;
+			for (auto spam : t.second.getSpamSet()) {
+					news_file << spam << endl;
+			}
+			news_file << "end_spam" << endl;
 			news_file << t.second.getDate() << endl;
 		}
 	}
@@ -163,14 +182,29 @@ void io_files::fetch_news_data()
 	ifstream news_file;
 	news_file.open("news.txt", ios::in);
 	news_file.seekg(0);
-	News news;
+	News news, emptyNews;
 	if (news_file.is_open()) {
 		while (getline(news_file, line[count])) {
 			if (line[count] == "start_rates") {
-				string rate;
-				while (getline(news_file, rate)) {
-					if (rate == "end_rates") break;
-					else news.rates.push_back(stoi(rate));
+				string rate[2];
+				int j = 0;
+				while (getline(news_file, rate[j])) {
+					if (rate[j] == "end_rates") break;
+					else if (j == 1)
+					{
+						news.newsRates[rate[0]] = stof(rate[1]);
+						j = 0;
+					}
+					else
+						j++;
+				}
+			}
+			else if (line[count] == "start_spam") {
+				string user;
+				while (getline(news_file, user)) {
+					if (user == "end_spam") break;
+
+					news.addUserToSpamSet(user);
 				}
 			}
 			else if (count == 7) {
@@ -181,9 +215,13 @@ void io_files::fetch_news_data()
 				news.setDescription(line[3]);
 				news.setAdminFirstName(line[4]);
 				news.setAdminSecondName(line[5]);
-				news.setAvgRate(line[6]);
+				news.setAvgRate(stof(line[6]));
 				news.setDate(line[7]);
-				News::News_Container.insert({ news.getTitle(), news });
+				float rate = news.getRate();
+				if (rate > 2) {
+					News::News_Container.insert({ news.getTitle(), news });
+				}
+				news = emptyNews;
 			}
 
 			else {
@@ -191,6 +229,7 @@ void io_files::fetch_news_data()
 			}
 		}
 	}
+
 	/*
 		cout << "\n\nData From Map";
 		int i = 1;
@@ -226,6 +265,7 @@ void io_files::fetch_news_data()
 	news_file.close();
 }
 
+// CATEGORIES
 void io_files::save_categories() {
 	ofstream category_file;
 	category_file.open("categories.txt", ios::trunc);
@@ -248,4 +288,80 @@ void io_files::fetch_categories() {
 		}
 	}
 	category_file.close();
+}
+
+//COMMENTS
+void io_files::save_comments()
+{
+	ofstream outputFile("comments.txt");
+	if (outputFile.is_open()) {
+		for (const auto& pair : Reader::commentsMap) {
+			News news = pair.first;
+			stack<string> comments = pair.second;
+
+			outputFile << "News Title: " << news.getTitle() << "\n";
+			outputFile << "Comments:\n";
+
+			// Temporary vector to store comments in correct order :(
+			vector<string> tempVec;
+
+			
+			stack<string> tempStack = comments; 
+			while (!tempStack.empty()) {
+				tempVec.push_back(tempStack.top());
+				tempStack.pop();
+			}
+
+			// Write comments from vector to file in reverse order (since stack was reversed)
+			for (auto rit = tempVec.rbegin(); rit != tempVec.rend(); ++rit) {
+				outputFile << "- " << *rit << "\n";
+			}
+
+			outputFile << "\n"; 
+		}
+
+		outputFile.close();
+		cout << "Comments saved to 'comments.txt' successfully.\n";
+	}
+	else {
+		cout << "Error: Unable to open file 'comments.txt' for writing.\n";
+	}
+}
+
+void io_files::fetch_comments_from_file()
+{
+	ifstream inputFile("comments.txt");
+	string line;
+	News currentNews;
+	stack<string> currentComments;
+	
+	if (inputFile.is_open()) {
+		while (getline(inputFile, line)) {
+			if (line.substr(0, 11) == "News Title:") {
+				if (!currentNews.getTitle().empty()) {
+					Reader::commentsMap[currentNews] = currentComments;
+					currentComments = stack<string>(); // Reset comments for new news
+				}
+				string title = line.substr(12); //  title
+				currentNews.setTitle(title);
+			}
+			else if (line.substr(0, 10) == "Comments:") {
+				
+				while (getline(inputFile, line) && !line.empty()) {
+					currentComments.push(line.substr(2)); // Ignore  "- " 
+				}
+			}
+		}
+
+		// Add last news and its comments
+		if (!currentNews.getTitle().empty()) {
+			Reader::commentsMap[currentNews] = currentComments;
+		}
+
+		inputFile.close();
+		cout << "Comments loaded from " << "comments.txt" << " successfully.\n";
+	}
+	else {
+		cout << "Error: Unable to open file " << "comments.txt" << " for reading.\n";
+	}
 }

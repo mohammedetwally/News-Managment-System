@@ -1,13 +1,15 @@
 #pragma once
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 #include <sstream>
 #include <iomanip>
-#include"User.h"
-#include"Admin.h"
-#include"Reader.h"
-#include"News.h"
+#include "User.h"
+#include "Admin.h"
+#include "Reader.h"
+#include "News.h"
+
 using namespace std;
+
 class Test
 {
 public:
@@ -24,4 +26,5 @@ public:
 	static bool compareByDate(pair<string, News> a, pair<string, News> b);
 	static bool isDate(string inputStr);
 	static string extractDate(string fullDate);
+	static bool testComment(string comment);
 };

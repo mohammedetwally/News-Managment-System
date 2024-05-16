@@ -1,3 +1,19 @@
-﻿  Reader.cpp
-D:\Project\News-Managment-System\News Managment System\Reader.cpp(283,12): warning C4129: '=': unrecognized character escape sequence
-  News Managment System.vcxproj -> D:\Project\News-Managment-System\x64\Debug\News Managment System.exe
+﻿  Admin.cpp
+  io_files.cpp
+  Menus.cpp
+  News Managment System.cpp
+  News.cpp
+C:\Users\MoDo\Downloads\News-Managment-System\News Managment System\News.cpp(96,17): warning C4129: 'M': unrecognized character escape sequence
+  Reader.cpp
+C:\Users\MoDo\Downloads\News-Managment-System\News Managment System\Reader.cpp(336,12): warning C4129: '=': unrecognized character escape sequence
+C:\Users\MoDo\Downloads\News-Managment-System\News Managment System\Reader.cpp(613,37): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  Test.cpp
+  User.cpp
+  Generating Code...
+C:\Users\MoDo\Downloads\News-Managment-System\News Managment System\Test.cpp(111): warning C4715: 'Test::adminOrReader': not all control paths return a value
+C:\Users\MoDo\Downloads\News-Managment-System\News Managment System\Test.cpp(174): warning C4715: 'Test::rate_test': not all control paths return a value
+  News Managment System.vcxproj -> C:\Users\MoDo\Downloads\News-Managment-System\x64\Debug\News Managment System.exe

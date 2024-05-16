@@ -1,6 +1,7 @@
 #include "Test.h"
-#include"Menus.h"
-# include"User.h"
+#include "Menus.h"
+#include "User.h"
+
 bool Test::names_test(string name)
 {
 	if (name.empty())
@@ -66,6 +67,47 @@ bool Test::readerValidation(Reader reader, string login_password, string login_u
 		return false;
 	}
 	else return false;
+}
+
+User Test::adminOrReader(User user)
+{
+	cout << "\n1 -> Register as an Admin ";
+	cout << "\n2 -> Register as an Reader \n";
+	cout << "\n\nEnter your choice: ";
+	int decision;
+	cin >> decision;
+	if (decision == 1)
+	{
+		Admin admin = user;
+		admin.setRole("admin");
+		//User::admin_container.insert(make_pair(make_pair(admin.getUserName(), admin.getPassword()), admin));
+		return(admin);
+	}
+	else if (decision == 2)
+	{
+		Reader reader = user;
+		reader.setRole("reader");
+		//User::reader_container.insert(make_pair(make_pair(reader.getUserName(), user.getPassword()),reader));
+		return reader;
+	}
+	else
+	{
+	flag:
+		int choose;
+		cout << "Invalid Choice";
+		cout << "1 -> Try Again";
+		cout << "2 -> Back to Main Menu";
+		cin >> choose;
+		if (choose == 1)
+			adminOrReader(user);
+		else if (choose == 2)
+			Menus::mainMenu();
+		else
+		{
+			cout << "Invalid Choice";
+			goto flag;
+		}
+	}
 }
 
 bool Test::user_check(User& user)
@@ -136,51 +178,6 @@ bool Test::compareByDate(pair<string, News> a, pair<string, News> b)
 	return a.second.getDate() < b.second.getDate();
 }
 
-
-
-
-User Test::adminOrReader(User user)
-{
-	cout << "\n1 -> Register as an Admin ";
-	cout << "\n2 -> Register as an Reader \n";
-	cout << "\n\nEnter your choice: ";
-	int decision;
-	cin >> decision;
-	if (decision == 1)
-	{
-		Admin admin = user;
-		admin.setRole("admin");
-		//User::admin_container.insert(make_pair(make_pair(admin.getUserName(), admin.getPassword()), admin));
-		return(admin);
-	}
-	else if (decision == 2)
-	{
-		Reader reader = user;
-		reader.setRole("reader");
-		//User::reader_container.insert(make_pair(make_pair(reader.getUserName(), user.getPassword()),reader));
-		return reader;
-	}
-	else
-	{
-	flag:
-		int choose;
-		cout << "Invalid Choice";
-		cout << "1 -> Try Again";
-		cout << "2 -> Back to Main Menu";
-		cin >> choose;
-		if (choose == 1)
-			adminOrReader(user);
-		else if (choose == 2)
-			Menus::mainMenu(user);
-		else
-		{
-			cout << "Invalid Choice";
-			goto flag;
-		}
-	}
-}
-
-
 bool Test::isDate(string inputStr)
 {
 	istringstream ss(inputStr);
@@ -195,4 +192,28 @@ string Test::extractDate(string fullDate)
 	string date;
 	ss >> date;
 	return date;
+}
+
+bool Test::testComment(string comment)
+{
+
+	if (comment.empty())
+		return false;
+	else
+	{
+		int character = 0, sympol = 0, digit = 0;
+		for (int i = 0; i < comment.length(); i++)
+		{
+			if (comment[i] >= '1' && comment[i] <= '9')
+				digit++;
+			else if (comment[i] >= 'a' && comment[i] <= 'z' || comment[i] >= 'A' && comment[i] <= 'Z')
+				character++;
+			else if (comment[i] >= 33 && comment[i] <= 47 || comment[i] >= 58 && comment[i] <= 64 || comment[i] >= 91 && comment[i] <= 96 || comment[i] >= 123 && comment[i] <= 126)
+				sympol++;
+		}
+		if (character == 0)
+			return false;
+		else
+			return true;
+	}
 }

@@ -4,7 +4,7 @@
 class Menus
 {
 public:
-	static void mainMenu(User user);
+	static void mainMenu();
 	static void Exit();
 	static void adminMenu(Admin admin);
 	static void readerMenu(Reader reader);

@@ -1,9 +1,11 @@
 #pragma once
-#include<iostream>
-#include<string>
-# include<map>
-#include<set>
+#include <iostream>
+#include <string>
+#include <map>
+#include <set>
+
 using namespace std;
+
 class User
 {
 protected:
@@ -13,6 +15,7 @@ protected:
 	string second_name;
 	string role;
 	set<string>preferredCategories;
+	string lastLoginDate;
 
 public:
 	User() {};
@@ -22,16 +25,20 @@ public:
 	string getUserName();
 	string getPassword();
 	string getRole();
+	string getLastLoginDate();
+	set<string> getPreferredCategories();
 
 	// containers
 
 	// Setter methods
-	void setUserName(string username);
-	void setPassword(string pass);
 	void setFirstName(string first_name);
 	void setSecondName(string second_name);
+	void setUserName(string username);
+	void setPassword(string pass);
 	void setRole(string role);
-
+	void setLastLoginDate(string date);
+	void setLastLoginDateAsCurrent();
+	void setPreferredCategories(string preferredCategory);
 
 	// Registeration methods
 	void enter_first_name(string first_name, User& user);
